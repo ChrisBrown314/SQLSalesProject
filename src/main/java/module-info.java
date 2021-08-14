@@ -9,4 +9,8 @@ module com.github.sqlsalesproject.sqlsalesproject {
     opens com.github.sqlsalesproject.databasemanagement to javafx.fxml;
     exports com.github.sqlsalesproject.salesapp;
     opens com.github.sqlsalesproject.salesapp to javafx.fxml;
+    exports com.github.sqlsalesproject.fxmlcontrollers;
+    opens com.github.sqlsalesproject.fxmlcontrollers to javafx.fxml;
+    exports com.github.sqlsalesproject.sale;
+    opens com.github.sqlsalesproject.sale to javafx.fxml;
 }
