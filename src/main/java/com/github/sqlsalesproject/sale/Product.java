@@ -8,7 +8,7 @@ public enum Product {
     CHICKEN_SANDWICH (5, PropertyReader.fetchSalePrice("chickensandwich")) {
         @Override
         public String toString () {
-            return "Catfish";
+            return "Chicken Sandwich";
         }
     },
     CHICKEN_STRIPS (5, PropertyReader.fetchSalePrice("chickenstrips")) {
