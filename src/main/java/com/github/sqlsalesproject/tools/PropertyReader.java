@@ -17,18 +17,11 @@ public class PropertyReader {
             Properties saleProperties = new Properties();
             saleProperties.load(inputStream);
             //Fetching Sales Price
-            switch(product.toLowerCase()) {
-                case "hamburger":
-                    salesPrice = Double.parseDouble(saleProperties.getProperty("hamburgerSalePrice"));
-                    break;
-                case "chickenstrips":
-                    salesPrice = Double.parseDouble(saleProperties.getProperty("chickenStripsSalePrice"));
-                    break;
-                case "chickensandwich":
-                    salesPrice = Double.parseDouble(saleProperties.getProperty("chickenSandwichSalePrice"));
-                    break;
-                default:
-                    break;
+            switch (product.toLowerCase()) {
+                case "hamburger" -> salesPrice = Double.parseDouble(saleProperties.getProperty("hamburgerSalePrice"));
+                case "chickenstrips" -> salesPrice = Double.parseDouble(saleProperties.getProperty("chickenStripsSalePrice"));
+                case "chickensandwich" -> salesPrice = Double.parseDouble(saleProperties.getProperty("chickenSandwichSalePrice"));
+                default -> System.err.println("ERR: Invalid product given for fetching sales price. Returning 0.0!");
             }
             //Closing Stream
             if (inputStream != null) {
