@@ -1,6 +1,7 @@
 package com.github.sqlsalesproject.salesapp;
 
 import com.github.sqlsalesproject.databasemanagement.Database;
+import com.github.sqlsalesproject.sale.Product;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

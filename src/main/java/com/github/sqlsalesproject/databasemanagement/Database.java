@@ -20,7 +20,7 @@ public class Database {
             Connection = DriverManager.getConnection(CONNECTION_INFO,DB_USERNAME, DB_PASSSWORD);
         } catch (SQLException sql_exception) {
             //TODO logging and better error handling
-            System.err.println("ERR: Failed to connect to SQL database");
+            System.err.println("ERR: Failed to connect to SQL database. Quitting!");
             System.exit(-1);
         }
     }
