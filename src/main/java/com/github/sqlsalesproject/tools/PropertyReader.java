@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**Returns data from various property files used throughout the program */
+/**Returns data from property files */
 public class PropertyReader {
 
-    /**Fetches the sale price of a file from the prices.properties file*/
+    /**Fetches the sale price of a product from the prices.properties file*/
     public static double fetchProductionCost(String product) {
         double productionCost = 0.0;
         try {
@@ -23,7 +23,6 @@ public class PropertyReader {
                 case "chickensandwich" -> productionCost = Double.parseDouble(saleProperties.getProperty("chickenSandwichCostToProduce"));
                 default -> System.err.println("ERR: Invalid product given for fetching production cost. Returning 0.0!");
             }
-            //Closing Stream
             if (inputStream != null) {
                 inputStream.close();
             }
@@ -36,7 +35,7 @@ public class PropertyReader {
         }
         return productionCost;
     }
-    /**Fetches the sale price of a file from the prices.properties file*/
+    /**Fetches the sale price of a product from the prices.properties file*/
     public static double fetchSalePrice(String product) {
         double salesPrice = 0.0;
         try {
@@ -51,7 +50,6 @@ public class PropertyReader {
                 case "chickensandwich" -> salesPrice = Double.parseDouble(saleProperties.getProperty("chickenSandwichSalePrice"));
                 default -> System.err.println("ERR: Invalid product given for fetching sales price. Returning 0.0!");
             }
-            //Closing Stream
             if (inputStream != null) {
                 inputStream.close();
             }

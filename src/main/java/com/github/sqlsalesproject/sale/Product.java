@@ -2,7 +2,7 @@ package com.github.sqlsalesproject.sale;
 
 import com.github.sqlsalesproject.tools.PropertyReader;
 
-/** Sets up all possible products, as well their toString method, sales price, and cost to produce */
+/** Sets up products with a toString method, sales price, and production cost */
 public enum Product {
     CHICKEN_SANDWICH (PropertyReader.fetchProductionCost("chickensandwich"), PropertyReader.fetchSalePrice("chickensandwich")) {
         @Override
@@ -23,7 +23,7 @@ public enum Product {
         }
     };
 
-    /**Constructs the enum with a sale price and production cost value*/
+    /**Constructs the enum with a sale price and production cost*/
     private final double costToProduce;
     private final double salePrice;
     Product (double costToProduce, double salePrice)
@@ -31,12 +31,12 @@ public enum Product {
         this.costToProduce = costToProduce;
         this.salePrice = salePrice;
     }
-    /** Returns cost to produce the product */
-    public double getCostToProduce() {
+    /** Returns product's production cost */
+    double getCostToProduce() {
         return costToProduce;
     }
-    /** Returns sale price of the product */
-    public double getSalePrice() {
+    /** Returns product's sale price */
+    double getSalePrice() {
         return salePrice;
     }
 }
