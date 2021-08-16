@@ -4,27 +4,26 @@ import com.github.sqlsalesproject.tools.PropertyReader;
 
 /** Sets up all possible products, as well their toString method, sales price, and cost to produce */
 public enum Product {
-    //TODO - make this modular/add configuration menu
-    CHICKEN_SANDWICH (5, PropertyReader.fetchSalePrice("chickensandwich")) {
+    CHICKEN_SANDWICH (PropertyReader.fetchProductionCost("chickensandwich"), PropertyReader.fetchSalePrice("chickensandwich")) {
         @Override
         public String toString () {
             return "Chicken Sandwich";
         }
     },
-    CHICKEN_STRIPS (5, PropertyReader.fetchSalePrice("chickenstrips")) {
+    CHICKEN_STRIPS (PropertyReader.fetchProductionCost("chickenstrips"), PropertyReader.fetchSalePrice("chickenstrips")) {
         @Override
         public String toString () {
             return "Chicken Strips";
         }
     },
-    HAMBURGER (4, PropertyReader.fetchSalePrice("hamburger")) {
+    HAMBURGER(PropertyReader.fetchProductionCost("hamburger"), PropertyReader.fetchSalePrice("hamburger")) {
         @Override
         public String toString () {
             return "Hamburger";
         }
     };
 
-    /**Constructs the enum with a price value*/
+    /**Constructs the enum with a sale price and production cost value*/
     private final double costToProduce;
     private final double salePrice;
     Product (double costToProduce, double salePrice)
@@ -32,9 +31,11 @@ public enum Product {
         this.costToProduce = costToProduce;
         this.salePrice = salePrice;
     }
+    /** Returns cost to produce the product */
     public double getCostToProduce() {
         return costToProduce;
     }
+    /** Returns sale price of the product */
     public double getSalePrice() {
         return salePrice;
     }
