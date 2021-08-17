@@ -16,7 +16,6 @@ public class Database {
     private static Database databaseInstance = null;
     /** Connects to Database upon instantiation */
     private Database() {
-        //TODO connect to database
         try {
             Connection = DriverManager.getConnection(CONNECTION_INFO,DB_USERNAME, DB_PASSWORD);
         } catch (SQLException sql_exception) {

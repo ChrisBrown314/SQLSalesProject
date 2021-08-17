@@ -1,8 +1,9 @@
 package com.github.sqlsalesproject.sale;
 
-/** List of Purchases for a given time frame */
+/** Group of Purchases */
 public class PurchaseHistory {
-    //Needs an array list of purchases, possibly check if same month or week?
+    //TODO - Constructor, Calculations, caching, get methods, addpurchase function and redo caching, .split()
+    //Needs an array list of purchases for day, week, year, and month -- or maybe have this elsewhere
 
     //Constructor with array list for purchases
 
