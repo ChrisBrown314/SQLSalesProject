@@ -7,12 +7,13 @@ import java.util.GregorianCalendar;
 
 public class Purchase implements Comparable<Purchase> {
     //TODO - Add constructor w/ GregorianCalendar
-    //TODO - CompareTo Method for sorting by date
     private GregorianCalendar dateOfPurchase; //In the format of hour:minute AM/PM month-day-year
-    private ArrayList<Product> productsPurchased;
+    private final double SALE_PRICE;
+    private final double PRODUCTION_COST;
 
     /** Constructs a purchase with given date and product list */ //TODO - Unit Tests to make sure date is working
     public Purchase(String dateOfPurchase, ArrayList<Product> productsPurchased) {
+        //Date Information
         SimpleDateFormat dateFormatter = new SimpleDateFormat("h:mm a MM-dd-yyyy"); //hour:minute AM/PM month-day-year
         this.dateOfPurchase = new GregorianCalendar();
         try {
@@ -20,7 +21,10 @@ public class Purchase implements Comparable<Purchase> {
         } catch (ParseException e) {
             System.err.println("ERR: Failed to parse Date in purchase, calender date not set!");
         }
-        this.productsPurchased = productsPurchased;
+        //Calculation caching
+        SALE_PRICE = calcTotalSalePrice(productsPurchased);
+        PRODUCTION_COST = calcTotalProductionCost(productsPurchased);
+
     }
 
     /** Returns the date of the purchase */
@@ -39,7 +43,7 @@ public class Purchase implements Comparable<Purchase> {
     }
 
     /** Calculates Production Cost for purchase */
-    double getTotalProductionCost() {
+    double calcTotalProductionCost(ArrayList<Product> productsPurchased) {
         double totalProductionCost = 0.0;
         if (productsPurchased.isEmpty()) {
             System.err.println("ERR: Empty product array found in getTotalProduction, returning 0.0!");
@@ -51,8 +55,13 @@ public class Purchase implements Comparable<Purchase> {
             return totalProductionCost;
         }
     }
+    /** Returns cached production cost */
+    double getTotalProductionCost() {
+        return PRODUCTION_COST;
+    }
+
     /** Calculates Sale Price of purchase*/
-    double getTotalSalePrice() {
+    double calcTotalSalePrice(ArrayList<Product> productsPurchased) {
         double totalSalePrice = 0.0;
         if (productsPurchased.isEmpty()) {
             System.err.println("ERR: Empty product array found in getTotalSalePrice, returning 0.0!");
@@ -64,8 +73,13 @@ public class Purchase implements Comparable<Purchase> {
             return totalSalePrice;
         }
     }
+    /**Returns cached sale price*/
+    double getTotalSalePrice () {
+        return SALE_PRICE;
+    }
+    
     /** Calculates the profit made from the purchase*/
     double getProfitMade () {
-        return getTotalSalePrice() - getTotalProductionCost();
+        return SALE_PRICE - PRODUCTION_COST;
     }
 }
