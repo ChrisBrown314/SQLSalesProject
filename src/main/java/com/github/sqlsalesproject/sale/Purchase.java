@@ -3,33 +3,33 @@ package com.github.sqlsalesproject.sale;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Purchase {
     //TODO - Also calculate profit made
-    private Date dateOfPurchase; //In the format of hour:minute AM/PM month-day-year
+    private GregorianCalendar dateOfPurchase; //In the format of hour:minute AM/PM month-day-year
     private ArrayList<Product> productsPurchased;
 
     /** Constructs a purchase with given date and product list */ //TODO - Unit Tests to make sure date is working
     public Purchase(String dateOfPurchase, ArrayList<Product> productsPurchased) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("h:mm a MM-dd-yyyy"); //hour:minute AM/PM month-day-year
+        this.dateOfPurchase = new GregorianCalendar();
         try {
-            this.dateOfPurchase = dateFormatter.parse(dateOfPurchase);
+            this.dateOfPurchase.setTime(dateFormatter.parse(dateOfPurchase));
         } catch (ParseException e) {
-            System.err.println("ERR: Failed to parse Date in purchase, setting date to now!");
-            this.dateOfPurchase = new Date();
+            System.err.println("ERR: Failed to parse Date in purchase, calender date not set!");
         }
         this.productsPurchased = productsPurchased;
     }
 
-    /** Returns the date and time of the purchase */
-    Date getDate() {
+    /** Returns the date of the purchase */
+    GregorianCalendar getDate() {
         return dateOfPurchase;
     }
     /** Returns the date of purchase as a string */
     String getDateAsString() {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("h:mm a MM-dd-yyyy");
-        return dateFormatter.format(dateOfPurchase);
+        return dateFormatter.format(dateOfPurchase.getTime());
     }
     /** Calculates Production Cost for purchase */
     double getTotalProductionCost() {
