@@ -7,17 +7,17 @@ import java.util.GregorianCalendar;
 
 public class Purchase implements Comparable<Purchase> {
     //TODO - Add constructor w/ GregorianCalendar
-    private GregorianCalendar dateOfPurchase; //In the format of hour:minute AM/PM month-day-year
+    private final GregorianCalendar PURCHASE_DATE; //In the format of hour:minute AM/PM month-day-year
     private final double SALE_PRICE;
     private final double PRODUCTION_COST;
 
     /** Constructs a purchase with given date and product list */ //TODO - Unit Tests to make sure date is working
-    public Purchase(String dateOfPurchase, ArrayList<Product> productsPurchased) {
+    public Purchase(String purchaseDate, ArrayList<Product> productsPurchased) {
         //Date Information
         SimpleDateFormat dateFormatter = new SimpleDateFormat("h:mm a MM-dd-yyyy"); //hour:minute AM/PM month-day-year
-        this.dateOfPurchase = new GregorianCalendar();
+        PURCHASE_DATE = new GregorianCalendar();
         try {
-            this.dateOfPurchase.setTime(dateFormatter.parse(dateOfPurchase));
+            PURCHASE_DATE.setTime(dateFormatter.parse(purchaseDate));
         } catch (ParseException e) {
             System.err.println("ERR: Failed to parse Date in purchase, calender date not set!");
         }
@@ -29,17 +29,17 @@ public class Purchase implements Comparable<Purchase> {
 
     /** Returns the date of the purchase */
     GregorianCalendar getDate() {
-        return dateOfPurchase;
+        return PURCHASE_DATE;
     }
     /** Returns the date of purchase as a string */
     String getDateAsString() {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("h:mm a MM-dd-yyyy");
-        return dateFormatter.format(dateOfPurchase.getTime());
+        return dateFormatter.format(PURCHASE_DATE.getTime());
     }
     /** Compares two purchases by their dates for sorting */
     @Override
     public int compareTo(Purchase purchase) {
-        return dateOfPurchase.compareTo(purchase.dateOfPurchase);
+        return PURCHASE_DATE.compareTo(purchase.PURCHASE_DATE);
     }
 
     /** Calculates Production Cost for purchase */
@@ -77,7 +77,7 @@ public class Purchase implements Comparable<Purchase> {
     double getTotalSalePrice () {
         return SALE_PRICE;
     }
-    
+
     /** Calculates the profit made from the purchase*/
     double getProfitMade () {
         return SALE_PRICE - PRODUCTION_COST;
