@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Purchase {
-    //TODO - Calculate Production and Sale Cost, error checking for empty arraylist object
     //TODO - Also calculate profit made
     private Date dateOfPurchase; //In the format of hour:minute AM/PM month-day-year
     private ArrayList<Product> productsPurchased;
@@ -24,12 +23,42 @@ public class Purchase {
     }
 
     /** Returns the date and time of the purchase */
-    public Date getDate() {
+    Date getDate() {
         return dateOfPurchase;
     }
     /** Returns the date of purchase as a string */
-    public String getDateAsString() {
+    String getDateAsString() {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("h:mm a MM-dd-yyyy");
         return dateFormatter.format(dateOfPurchase);
+    }
+    /** Calculates Production Cost for purchase */
+    double getTotalProductionCost() {
+        double totalProductionCost = 0.0;
+        if (productsPurchased.isEmpty()) {
+            System.err.println("ERR: Empty product array found in getTotalProduction, returning 0.0!");
+            return totalProductionCost;
+        } else {
+            for (Product product : productsPurchased) {
+                totalProductionCost += product.getCostToProduce();
+            }
+            return totalProductionCost;
+        }
+    }
+    /** Calculates Sale Price of purchase*/
+    double getTotalSalePrice() {
+        double totalSalePrice = 0.0;
+        if (productsPurchased.isEmpty()) {
+            System.err.println("ERR: Empty product array found in getTotalSalePrice, returning 0.0!");
+            return totalSalePrice;
+        } else {
+            for (Product product : productsPurchased) {
+                totalSalePrice += product.getSalePrice();
+            }
+            return totalSalePrice;
+        }
+    }
+    /** Calculates the profit made from the purchase*/
+    double getProfitMade () {
+        return getTotalSalePrice() - getTotalProductionCost();
     }
 }
