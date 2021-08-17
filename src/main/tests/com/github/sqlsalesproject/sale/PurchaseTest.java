@@ -19,6 +19,9 @@ class PurchaseTest {
         //Was curious how using numbers outside of hour and month range would affect output
         Purchase test3 = new Purchase("14:10 AM 13-10-2028", new ArrayList<>());
         assertEquals("2:10 PM 01-10-2029",test3.getDateAsString());
+        //Wanted to test if you could put a single digit in the minutes section
+        Purchase test4 = new Purchase("1:2 AM 08-20-2002", new ArrayList<>());
+        assertEquals("1:02 AM 08-20-2002", test4.getDateAsString());
     }
     @Test
     @DisplayName("Calculation Methods test 1 - Single Product Type")

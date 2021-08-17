@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="SQLSalesProject" target="16" />
+      <module name="SQLSalesProject" target="14" />
     </bytecodeTargetLevel>
   </component>
 </project>

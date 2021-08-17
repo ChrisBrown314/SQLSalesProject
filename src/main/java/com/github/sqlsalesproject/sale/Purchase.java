@@ -7,11 +7,12 @@ import java.util.GregorianCalendar;
 
 public class Purchase implements Comparable<Purchase> {
     //TODO - Add constructor w/ GregorianCalendar
+    //TODO - Possibly round the prices and profit to two decimal points
     private final GregorianCalendar PURCHASE_DATE; //In the format of hour:minute AM/PM month-day-year
     private final double SALE_PRICE;
     private final double PRODUCTION_COST;
 
-    /** Constructs a purchase with given date and product list */ //TODO - Unit Tests to make sure date is working
+    /** Constructs a purchase with given date and product list */
     public Purchase(String purchaseDate, ArrayList<Product> productsPurchased) {
         //Date Information
         SimpleDateFormat dateFormatter = new SimpleDateFormat("h:mm a MM-dd-yyyy"); //hour:minute AM/PM month-day-year
@@ -24,7 +25,6 @@ public class Purchase implements Comparable<Purchase> {
         //Calculation caching
         SALE_PRICE = calcTotalSalePrice(productsPurchased);
         PRODUCTION_COST = calcTotalProductionCost(productsPurchased);
-
     }
 
     /** Returns the date of the purchase */
