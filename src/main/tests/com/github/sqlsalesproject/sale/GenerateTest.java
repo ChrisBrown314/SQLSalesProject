@@ -4,8 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class GenerateTest {
     private String generatedDate;
     private Purchase generatedPurchase;
@@ -17,7 +15,7 @@ class GenerateTest {
     }
 
     @RepeatedTest(100)
-    @DisplayName("Outputs a ton of generated data just to check if everything is working.")
+    @DisplayName("Outputs generated data just to check if everything is working properly.")
     void generatedTest () {
         System.out.println("Generated Date: " + generatedDate);
         System.out.println("Total Profit Made: " + generatedPurchase.getProfitMade());
