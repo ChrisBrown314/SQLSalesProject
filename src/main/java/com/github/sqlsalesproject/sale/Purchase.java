@@ -5,8 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-public class Purchase {
-    //TODO - Also calculate profit made
+public class Purchase implements Comparable<Purchase> {
+    //TODO - Add constructor w/ GregorianCalendar
+    //TODO - CompareTo Method for sorting by date
     private GregorianCalendar dateOfPurchase; //In the format of hour:minute AM/PM month-day-year
     private ArrayList<Product> productsPurchased;
 
@@ -31,6 +32,12 @@ public class Purchase {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("h:mm a MM-dd-yyyy");
         return dateFormatter.format(dateOfPurchase.getTime());
     }
+    /** Compares two purchases by their dates for sorting */
+    @Override
+    public int compareTo(Purchase purchase) {
+        return dateOfPurchase.compareTo(purchase.dateOfPurchase);
+    }
+
     /** Calculates Production Cost for purchase */
     double getTotalProductionCost() {
         double totalProductionCost = 0.0;
