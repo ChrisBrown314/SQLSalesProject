@@ -43,17 +43,16 @@ public class Purchase implements Comparable<Purchase> {
     }
 
     /** Calculates Production Cost for purchase */
-    double calcTotalProductionCost(ArrayList<Product> productsPurchased) {
+    private double calcTotalProductionCost(ArrayList<Product> productsPurchased) {
         double totalProductionCost = 0.0;
         if (productsPurchased.isEmpty()) {
             System.err.println("ERR: Empty product array found in getTotalProduction, returning 0.0!");
-            return totalProductionCost;
         } else {
             for (Product product : productsPurchased) {
                 totalProductionCost += product.getCostToProduce();
             }
-            return totalProductionCost;
         }
+        return totalProductionCost;
     }
     /** Returns cached production cost */
     double getTotalProductionCost() {
@@ -61,17 +60,16 @@ public class Purchase implements Comparable<Purchase> {
     }
 
     /** Calculates Sale Price of purchase*/
-    double calcTotalSalePrice(ArrayList<Product> productsPurchased) {
+    private double calcTotalSalePrice(ArrayList<Product> productsPurchased) {
         double totalSalePrice = 0.0;
         if (productsPurchased.isEmpty()) {
             System.err.println("ERR: Empty product array found in getTotalSalePrice, returning 0.0!");
-            return totalSalePrice;
         } else {
             for (Product product : productsPurchased) {
                 totalSalePrice += product.getSalePrice();
             }
-            return totalSalePrice;
         }
+        return totalSalePrice;
     }
     /**Returns cached sale price*/
     double getTotalSalePrice () {
