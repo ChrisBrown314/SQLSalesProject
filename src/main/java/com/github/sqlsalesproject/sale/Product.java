@@ -1,42 +1,35 @@
 package com.github.sqlsalesproject.sale;
 
-import com.github.sqlsalesproject.tools.PropertyReader;
+import static com.github.sqlsalesproject.tools.PropertyReader.fetchProductionCost;
+import static com.github.sqlsalesproject.tools.PropertyReader.fetchSalePrice;
 
 /** Sets up products with a toString method, sales price, and production cost */
 public enum Product {
-    CHICKEN_SANDWICH (PropertyReader.fetchProductionCost("chickensandwich"), PropertyReader.fetchSalePrice("chickensandwich")) {
-        @Override
-        public String toString () {
-            return "Chicken Sandwich";
-        }
-    },
-    CHICKEN_STRIPS (PropertyReader.fetchProductionCost("chickenstrips"), PropertyReader.fetchSalePrice("chickenstrips")) {
-        @Override
-        public String toString () {
-            return "Chicken Strips";
-        }
-    },
-    HAMBURGER(PropertyReader.fetchProductionCost("hamburger"), PropertyReader.fetchSalePrice("hamburger")) {
-        @Override
-        public String toString () {
-            return "Hamburger";
-        }
-    };
+    CHICKEN_SANDWICH (fetchProductionCost("chickensandwich"), fetchSalePrice("chickensandwich"), "chicken sandwich"),
+    CHICKEN_STRIPS (fetchProductionCost("chickenstrips"), fetchSalePrice("chickenstrips"),"chicken strips"),
+    HAMBURGER( fetchProductionCost("hamburger"), fetchSalePrice("hamburger"),"hamburger");
 
-    /**Constructs the enum with a sale price and production cost*/
-    private final double costToProduce;
-    private final double salePrice;
-    Product (double costToProduce, double salePrice)
+    /**Constructs the enum with a sale price, production cost, and type*/
+    private final double COST_TO_PRODUCE;
+    private final double SALE_PRICE;
+    private final String TYPE;
+    Product ( double costToProduce, double salePrice, String type)
     {
-        this.costToProduce = costToProduce;
-        this.salePrice = salePrice;
+        COST_TO_PRODUCE = costToProduce;
+        SALE_PRICE = salePrice;
+        TYPE = type;
     }
     /** Returns product's production cost */
     double getCostToProduce() {
-        return costToProduce;
+        return COST_TO_PRODUCE;
     }
     /** Returns product's sale price */
     double getSalePrice() {
-        return salePrice;
+        return SALE_PRICE;
+    }
+    /** toString method */
+    @Override
+    public String toString() {
+        return TYPE;
     }
 }

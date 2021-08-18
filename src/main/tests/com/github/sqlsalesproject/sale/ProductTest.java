@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class ProductTest {
+    //TODO - toString test
     @Test
     @DisplayName("Ensures all Production Costs are correct for all products")
     void productionCost() {
