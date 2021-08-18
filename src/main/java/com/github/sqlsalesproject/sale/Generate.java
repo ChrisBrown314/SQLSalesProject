@@ -1,5 +1,6 @@
 package com.github.sqlsalesproject.sale;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -7,23 +8,25 @@ import java.util.Random;
 public class Generate {
     //TODO - cleanup code some
     //TODO - generate purchase history
+    //TODO - Fix with new date info
     private static final Random RANDOM = new Random();
 
-    /** Generates a date string given a year */
-    static String date (String year) {
-        //In form hour:minute AM/PM month-day-year
-        //PM times only to prevent somewhat odd purchase times (like 2AM)
-        String hour = "" + (RANDOM.nextInt(12)+1); //1-12 hours
-        String minute = "" + (RANDOM.nextInt(60)); //0-59 minutes
-        String month = "" + (RANDOM.nextInt(12)+1); //1-12 months
-        String day = "" + (RANDOM.nextInt(31)+1); //1-31 days
-        return hour + ":" + minute + " PM " + month + "-" + day + "-" + year;
+    /** Generates a date given a year */
+    static LocalDate date (int year) {
+        int month = RANDOM.nextInt(11)+1;
+        //Ensures there aren't any errors with incorrect day month combinations
+        int day = switch (month) {
+            case 2 -> RANDOM.nextInt(27) + 1;
+            case 4, 5, 9, 11 -> RANDOM.nextInt(29) + 1;
+            default -> RANDOM.nextInt(30) + 1;
+        };
+        return LocalDate.of(year, month, day);
     }
 
     /** Generates a single purchase given a year */
-    public static Purchase purchase (String year) {
+    public static Purchase purchase (int year) {
         //Generate purchase date randomly
-        String dateInfo = Generate.date(year) ;
+        LocalDate dateInfo = Generate.date(year) ;
         //Generate Products randomly
         ArrayList<Product> productList = new ArrayList<>();
         int productCount = RANDOM.nextInt(7) + 1; // +1 ensures that there is at least 1 product

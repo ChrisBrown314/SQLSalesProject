@@ -1,40 +1,47 @@
 package com.github.sqlsalesproject.sale;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 public class Purchase implements Comparable<Purchase> {
-    //TODO - Add constructor w/ GregorianCalendar
     //TODO - Possibly round the prices and profit to two decimal points
-    private final GregorianCalendar PURCHASE_DATE; //In the format of hour:minute AM/PM month-day-year
+    private final LocalDate PURCHASE_DATE; //In the format of hour:minute AM/PM month-day-year
     private final double SALE_PRICE;
     private final double PRODUCTION_COST;
 
-    /** Constructs a purchase with given date and product list */
+    /** Constructs a purchase with given string and product list */
     public Purchase(String purchaseDate, ArrayList<Product> productsPurchased) {
-        //Date Information
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("h:mm a MM-dd-yyyy"); //hour:minute AM/PM month-day-year
-        PURCHASE_DATE = new GregorianCalendar();
-        try {
-            PURCHASE_DATE.setTime(dateFormatter.parse(purchaseDate));
-        } catch (ParseException e) {
-            System.err.println("ERR: Failed to parse Date in purchase, calender date not set!");
+        LocalDate localPurchaseDate;
+        //Date Information in form yyyy-mm-dd
+        //Try Catch is there to ensure that if a bad string is passed in, the program will catch it
+        //and continue on with a correctly formatted date string that will work
+        try{
+            localPurchaseDate = LocalDate.parse(purchaseDate);
+        } catch (DateTimeParseException e) {
+            System.err.println("ERR: Incorrect date string used when initializing purchase, " +
+                    "using 1111-11-11 instead!");
+            localPurchaseDate = LocalDate.of(1111,11,11);
         }
+        PURCHASE_DATE = localPurchaseDate;
         //Calculation caching
+        SALE_PRICE = calcTotalSalePrice(productsPurchased);
+        PRODUCTION_COST = calcTotalProductionCost(productsPurchased);
+    }
+    /** Constructs a purchase from a local date and products purchased*/
+    public Purchase(LocalDate purchaseDate, ArrayList<Product> productsPurchased) {
+        PURCHASE_DATE = purchaseDate;
         SALE_PRICE = calcTotalSalePrice(productsPurchased);
         PRODUCTION_COST = calcTotalProductionCost(productsPurchased);
     }
 
     /** Returns the date of the purchase */
-    GregorianCalendar getDate() {
+    LocalDate getDate() {
         return PURCHASE_DATE;
     }
     /** Returns the date of purchase as a string */
     String getDateAsString() {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("h:mm a MM-dd-yyyy");
-        return dateFormatter.format(PURCHASE_DATE.getTime());
+        return PURCHASE_DATE.toString();
     }
     /** Compares two purchases by their dates for sorting */
     @Override
