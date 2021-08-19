@@ -6,9 +6,12 @@ import java.util.ArrayList;
 
 public class Purchase implements Comparable<Purchase> {
     //TODO - Possibly round the prices and profit to two decimal points
+    //TODO - comment all final variables
+    private final double PRODUCTION_COST;
     private final LocalDate PURCHASE_DATE; //In the format of hour:minute AM/PM month-day-year
     private final double SALE_PRICE;
-    private final double PRODUCTION_COST;
+    private final int CHICKEN_AMOUNT;
+    private final int HAMBURGER_AMOUNT;
 
     /** Constructs a purchase with given string and product list */
     public Purchase(String purchaseDate, ArrayList<Product> productsPurchased) {
@@ -24,15 +27,18 @@ public class Purchase implements Comparable<Purchase> {
             localPurchaseDate = LocalDate.of(1111,11,11);
         }
         PURCHASE_DATE = localPurchaseDate;
-        //Calculation caching
         SALE_PRICE = calcTotalSalePrice(productsPurchased);
         PRODUCTION_COST = calcTotalProductionCost(productsPurchased);
+        CHICKEN_AMOUNT = getNumberProducts("chicken sandwich", productsPurchased)+getNumberProducts("chicken strips", productsPurchased);
+        HAMBURGER_AMOUNT = getNumberProducts("hamburger", productsPurchased);
     }
     /** Constructs a purchase from a local date and products purchased*/
     public Purchase(LocalDate purchaseDate, ArrayList<Product> productsPurchased) {
         PURCHASE_DATE = purchaseDate;
         SALE_PRICE = calcTotalSalePrice(productsPurchased);
         PRODUCTION_COST = calcTotalProductionCost(productsPurchased);
+        CHICKEN_AMOUNT = getNumberProducts("chicken sandwich", productsPurchased)+getNumberProducts("chicken strips", productsPurchased);
+        HAMBURGER_AMOUNT = getNumberProducts("hamburger", productsPurchased);
     }
 
     /** Returns the date of the purchase */
@@ -40,7 +46,7 @@ public class Purchase implements Comparable<Purchase> {
         return PURCHASE_DATE;
     }
     /** Returns the date of purchase as a string */
-    String getDateAsString() {
+    public String getDateAsString() {
         return PURCHASE_DATE.toString();
     }
     /** Compares two purchases by their dates for sorting */
@@ -52,39 +58,49 @@ public class Purchase implements Comparable<Purchase> {
     /** Calculates Production Cost for purchase */
     private double calcTotalProductionCost(ArrayList<Product> productsPurchased) {
         double totalProductionCost = 0.0;
-        if (productsPurchased.isEmpty()) {
-            System.err.println("ERR: Empty product array found in getTotalProduction, returning 0.0!");
-        } else {
-            for (Product product : productsPurchased) {
-                totalProductionCost += product.getCostToProduce();
-            }
+        for (Product product : productsPurchased) {
+            totalProductionCost += product.getCostToProduce();
         }
         return totalProductionCost;
     }
     /** Returns cached production cost */
-    double getTotalProductionCost() {
+    public double getTotalProductionCost() {
         return PRODUCTION_COST;
     }
 
     /** Calculates Sale Price of purchase*/
     private double calcTotalSalePrice(ArrayList<Product> productsPurchased) {
         double totalSalePrice = 0.0;
-        if (productsPurchased.isEmpty()) {
-            System.err.println("ERR: Empty product array found in getTotalSalePrice, returning 0.0!");
-        } else {
-            for (Product product : productsPurchased) {
-                totalSalePrice += product.getSalePrice();
-            }
+        for (Product product : productsPurchased) {
+            totalSalePrice += product.getSalePrice();
         }
         return totalSalePrice;
     }
     /**Returns cached sale price*/
-    double getTotalSalePrice () {
+    public double getTotalSalePrice () {
         return SALE_PRICE;
     }
 
     /** Calculates the profit made from the purchase*/
-    double getProfitMade () {
+    public double getProfitMade () {
         return SALE_PRICE - PRODUCTION_COST;
+    }
+
+    /** Returns how many of a given product was sold in a given purchase */
+    private int getNumberProducts (String productName, ArrayList<Product> productList) {
+        int productNumber = 0;
+        for (Product product : productList) {
+            if (product.toString().equals(productName)) {
+                productNumber++;
+            }
+        }
+        return productNumber;
+    }
+
+    public int getNumberChicken() {
+        return CHICKEN_AMOUNT;
+    }
+    public int getNumberHamburger() {
+        return HAMBURGER_AMOUNT;
     }
 }

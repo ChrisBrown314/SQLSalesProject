@@ -1,5 +1,7 @@
 package com.github.sqlsalesproject.sale;
 
+import com.github.sqlsalesproject.tools.OverSupplyLimitException;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
@@ -7,13 +9,10 @@ import java.util.Random;
 /** Generates objects with random values for testing purposes */
 public class Generate {
     //TODO - cleanup code some
-    //TODO - generate purchase history
-    //TODO - Fix with new date info
     private static final Random RANDOM = new Random();
 
-    /** Generates a date given a year */
-    static LocalDate date (int year) {
-        int month = RANDOM.nextInt(11)+1;
+    /** Generates a date given a year and month */
+    static LocalDate date (int year, int month) {
         //Ensures there aren't any errors with incorrect day month combinations
         int day = switch (month) {
             case 2 -> RANDOM.nextInt(27) + 1;
@@ -23,13 +22,13 @@ public class Generate {
         return LocalDate.of(year, month, day);
     }
 
-    /** Generates a single purchase given a year */
-    public static Purchase purchase (int year) {
+    /** Generates a single purchase given a year and month*/
+    public static Purchase purchase (int year, int month) {
         //Generate purchase date randomly
-        LocalDate dateInfo = Generate.date(year) ;
+        LocalDate dateInfo = Generate.date(year, month) ;
         //Generate Products randomly
         ArrayList<Product> productList = new ArrayList<>();
-        int productCount = RANDOM.nextInt(7) + 1; // +1 ensures that there is at least 1 product
+        int productCount = RANDOM.nextInt(3) + 1; // +1 ensures that there is at least 1 product
         for (int count = 0; count < productCount; count++) {
             int product = RANDOM.nextInt(3);
             switch (product) {
@@ -41,5 +40,20 @@ public class Generate {
         return new Purchase(dateInfo, productList);
     }
 
-
+    /** Generates a purchase history given supply limits and date information */
+    public static PurchaseHistory purchaseHistory(int supplyBurger, int supplyChicken, int year, int month) {
+        PurchaseHistory generatedPH = new PurchaseHistory(supplyBurger, supplyChicken);
+        boolean loop = true;
+        int productCount = 0;
+        int randomCondition = RANDOM.nextInt(1600)+500;
+        while (productCount < randomCondition && loop) {
+            try {
+                generatedPH.add(Generate.purchase(year, month));
+                productCount++;
+            } catch (OverSupplyLimitException e) {
+                loop = false;
+            }
+        }
+        return generatedPH;
+    }
 }
