@@ -32,7 +32,7 @@ class GenerateTest {
         PurchaseHistory generatedPH = Generate.purchaseHistory(2500, 5000, 2020, 1);
         System.out.println("\nPurchase History information: ");
         System.out.println("Production cost: " + generatedPH.getProductionCost());
-        System.out.println("Sale price: " + generatedPH.getSaleCost());
+        System.out.println("Sale price: " + generatedPH.getSalePrice());
         System.out.println("Profit: " + generatedPH.getProfit());
         System.out.println("Supply cost: " + generatedPH.getSupplyCost());
         System.out.println("Number of Purchases: " + generatedPH.getAllPurchases().size());

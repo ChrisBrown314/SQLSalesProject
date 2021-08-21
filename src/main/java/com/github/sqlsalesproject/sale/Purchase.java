@@ -100,15 +100,19 @@ public class Purchase implements Comparable<Purchase> {
         return productNumber;
     }
 
+    /** Returns total amount of chicken products purchased */
     public int getNumberChicken() {
         return STRIP_AMOUNT+SANDWICH_AMOUNT;
     }
+    /** Returns how many sandwiches were purchased */
     public int getNumberSandwich () {
         return SANDWICH_AMOUNT;
     }
+    /** Returns how many strips were purchased */
     public int getNumberStrip () {
         return STRIP_AMOUNT;
     }
+    /** Returns how many burgers were purchased */
     public int getNumberHamburger() {
         return HAMBURGER_AMOUNT;
     }

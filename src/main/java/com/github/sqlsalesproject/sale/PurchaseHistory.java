@@ -1,57 +1,50 @@
 package com.github.sqlsalesproject.sale;
 
-import com.github.sqlsalesproject.tools.OverSupplyLimitException;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /** Group of Purchases */
 public class PurchaseHistory {
-    //TODO - make more scalable and modular
-    //TODO - total of each sold
-    //TODO - Make the supplies more in depth: separate ingredients, expiration date, etc.
+    //TODO - Remove Supply from purchase history into separate supply class
     private final ArrayList<Purchase> PURCHASES;
-    private double saleCost;
+    private double salePrice;
     private double productionCost;
-    private final int SUPPLY_CHICKEN;
-    private final int SUPPLY_BURGER;
-    private final double SUPPLY_COST;
+    //private final int SUPPLY_CHICKEN;
+    //private final int SUPPLY_BURGER;
+    private double supplyCost;
     private final int MONTH;
-    private int burgerUsed;
-    private int chickenUsed;
+    //private int burgerUsed;
+    //private int chickenUsed;
 
 
     /** Constructs a purchase history given a purchase array list */
-    public PurchaseHistory(int supplyBurger, int supplyChicken, int month) {
+    public PurchaseHistory(double supplyCost, int month) {
         PURCHASES = new ArrayList<>();
-        SUPPLY_BURGER = supplyBurger;
-        SUPPLY_CHICKEN = supplyChicken;
-        SUPPLY_COST = (supplyBurger * Product.HAMBURGER.getCostToProduce()) + (supplyChicken * Product.CHICKEN_SANDWICH.getCostToProduce());
+        this.supplyCost = supplyCost;
         MONTH = month;
     }
-    public PurchaseHistory(int supplyBurger, int supplyChicken, int month, ArrayList<Purchase> purchases) {
+    public PurchaseHistory(double supplyCost, int month, ArrayList<Purchase> purchases) {
         PURCHASES = purchases;
-        SUPPLY_BURGER = supplyBurger;
-        SUPPLY_CHICKEN = supplyChicken;
-        SUPPLY_COST = (supplyBurger * Product.HAMBURGER.getCostToProduce()) + (supplyChicken * Product.CHICKEN_SANDWICH.getCostToProduce());
+        this.supplyCost = supplyCost;
         MONTH = month;
-        calculateSaleCost();
+        calculateSalePrice();
         calculateProductionCost();
     }
 
+    //Sale Price//
     /** Calculates sale cost and stores it */
-    private void calculateSaleCost () {
-        double saleCost = 0.0;
+    private void calculateSalePrice() {
+        double salePrice = 0.0;
         for(Purchase purchase : PURCHASES) {
-            saleCost += purchase.getTotalSalePrice();
+            salePrice += purchase.getTotalSalePrice();
         }
-        this.saleCost = saleCost;
+        this.salePrice = salePrice;
     }
     /** Returns sale cost of all purchases */
-    public double getSaleCost() {
-        return  saleCost;
+    public double getSalePrice() {
+        return salePrice;
     }
 
+    //Production Cost//
     /** Calculates production cost and stores it */
     private void calculateProductionCost () {
         double productionCost = 0.0;
@@ -65,42 +58,34 @@ public class PurchaseHistory {
         return productionCost;
     }
 
+    //Profit Made//
     /** Returns profit made */
     public double getProfit() {
-        return getSaleCost() - SUPPLY_COST;
+        return getSalePrice() - supplyCost;
     }
+
+    //Supply information//
     /** Returns total cost of supplies */
     public double getSupplyCost() {
-        return SUPPLY_COST;
+        return supplyCost;
+    }
+    public void setSupplyCost (double supplyCost) {
+        this.supplyCost = supplyCost;
     }
 
+    //Purchase Information//
     /** Stores a new purchase and recalculates everything */
-    void add(Purchase purchaseToAdd) throws OverSupplyLimitException {
-        burgerUsed += purchaseToAdd.getNumberHamburger();
-        chickenUsed += purchaseToAdd.getNumberChicken();
-        if (exceedsSupply(purchaseToAdd)) {
-            throw new OverSupplyLimitException("Purchase cannot be added as it exceeds supply limit!");
-        } else {
-            PURCHASES.add(purchaseToAdd);
-            calculateSaleCost();
-            calculateProductionCost();
-        }
+    void add(Purchase purchaseToAdd) {
+        PURCHASES.add(purchaseToAdd);
+        calculateSalePrice();
+        calculateProductionCost();
     }
-    /** Tests if a purchase would exceed the supply limit */
-    private boolean exceedsSupply(Purchase purchaseToTest) {
-        return burgerUsed > SUPPLY_BURGER || chickenUsed > SUPPLY_CHICKEN;
-    }
-
     /** Returns a list of all purchases in the purchase history array */
     public ArrayList<Purchase> getAllPurchases() {
         return PURCHASES;
     }
-    public int getSupplyChicken () {
-        return SUPPLY_CHICKEN;
-    }
-    public int getSupplyBurger () {
-        return SUPPLY_BURGER;
-    }
+
+    //Month Information//
     public int getMonth () {
         return MONTH;
     }

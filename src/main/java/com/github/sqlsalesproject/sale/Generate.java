@@ -41,20 +41,30 @@ public class Generate {
         }
         return new Purchase(dateInfo, productList);
     }
+
+    //Purchase History Generation//
     /** Generates a purchase history given supply limits and date information */
     public static PurchaseHistory purchaseHistory(int supplyBurger, int supplyChicken, int year, int month) {
-        PurchaseHistory generatedPH = new PurchaseHistory(supplyBurger, supplyChicken, month);
+        //Initialize variables
+        Supply supply = new Supply(new int[] {supplyBurger, supplyChicken});
+        PurchaseHistory generatedPH = new PurchaseHistory(0, month);
+        //Loop variables
         boolean loop = true;
         int productCount = 0;
         int randomCondition = RANDOM.nextInt(1600)+500;
+        //Loop to generate purchase history
         while (productCount < randomCondition && loop) {
-            try {
-                generatedPH.add(Generate.purchase(year, month));
+            Purchase generatedPurchase = Generate.purchase(year, month);
+            supply.useSupplies(generatedPurchase.getNumberHamburger(), generatedPurchase.getNumberChicken());
+            if (!supply.suppliesExceeded()) {
+                generatedPH.add(generatedPurchase);
                 productCount++;
-            } catch (OverSupplyLimitException e) {
+            } else {
                 loop = false;
             }
         }
+        //Sets supply cost for generated Purchase History
+        generatedPH.setSupplyCost(supply.getSupplyCost());
         return generatedPH;
     }
 }

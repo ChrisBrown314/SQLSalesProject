@@ -56,6 +56,9 @@ public class Database {
         }
     }
 
+    //TODO - figure out what to do with all these exceptions!
+    //TODO - Also figure out the statement stuff
+    //TODO - maybe also separate into separate classes
     //Table Handling//
     /** Returns true if the purchase table exists */
     private boolean purchaseTableExists() throws SQLException {
@@ -81,7 +84,7 @@ public class Database {
     }
     private void createHistoryTable() throws SQLException {
         Statement.executeUpdate("CREATE TABLE history ( month INT NOT NULL," +
-                " burger INT NOT NULL, chicken INT NOT NULL);");
+                " supplyCost DOUBLE NOT NULL);");
 
     }
     public void clearTables() throws SQLException {
@@ -98,11 +101,13 @@ public class Database {
                 purchase.getNumberSandwich()+ ", " +
                 purchase.getNumberStrip() + ");");
     }
+
+    //TODO - Refactor to work with new purchase history class
+    /** Writes a purchase history to the database */
     public void writePurchaseHistory (PurchaseHistory purchaseHistory) throws SQLException {
         Statement.executeUpdate("INSERT INTO history VALUES (" +
                 purchaseHistory.getMonth() + ", " +
-                purchaseHistory.getSupplyBurger() + ", " +
-                purchaseHistory.getSupplyChicken() + ");");
+                purchaseHistory.getSupplyCost() +");");
         for (Purchase purchase : purchaseHistory.getAllPurchases()) {
             writePurchase(purchase);
         }
@@ -111,7 +116,7 @@ public class Database {
     //TODO - Refactor and cleanup, also comment everything; maybe rename everything to make more sense
 
     // Fetching Purchase History //
-    public PurchaseHistory fetchPurchaseHistory(int month) throws PurchaseDoesNotExistException{
+    /*public PurchaseHistory fetchPurchaseHistory(int month) throws PurchaseDoesNotExistException{
         try {
             if (historyExists(month)) {
                 ResultSet historyInformation = Statement.executeQuery("SELECT * FROM " +
@@ -164,5 +169,5 @@ public class Database {
         boolean exists = (resultSet.getInt(1) == 1);
         resultSet.close();
         return exists;
-    }
+    }*/
 }
