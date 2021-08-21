@@ -2,6 +2,7 @@ package com.github.sqlsalesproject.sale;
 
 import com.github.sqlsalesproject.tools.OverSupplyLimitException;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /** Group of Purchases */
@@ -15,16 +16,27 @@ public class PurchaseHistory {
     private final int SUPPLY_CHICKEN;
     private final int SUPPLY_BURGER;
     private final double SUPPLY_COST;
+    private final int MONTH;
     private int burgerUsed;
     private int chickenUsed;
 
 
     /** Constructs a purchase history given a purchase array list */
-    public PurchaseHistory(int supplyBurger, int supplyChicken) {
+    public PurchaseHistory(int supplyBurger, int supplyChicken, int month) {
         PURCHASES = new ArrayList<>();
         SUPPLY_BURGER = supplyBurger;
         SUPPLY_CHICKEN = supplyChicken;
         SUPPLY_COST = (supplyBurger * Product.HAMBURGER.getCostToProduce()) + (supplyChicken * Product.CHICKEN_SANDWICH.getCostToProduce());
+        MONTH = month;
+    }
+    public PurchaseHistory(int supplyBurger, int supplyChicken, int month, ArrayList<Purchase> purchases) {
+        PURCHASES = purchases;
+        SUPPLY_BURGER = supplyBurger;
+        SUPPLY_CHICKEN = supplyChicken;
+        SUPPLY_COST = (supplyBurger * Product.HAMBURGER.getCostToProduce()) + (supplyChicken * Product.CHICKEN_SANDWICH.getCostToProduce());
+        MONTH = month;
+        calculateSaleCost();
+        calculateProductionCost();
     }
 
     /** Calculates sale cost and stores it */
@@ -36,7 +48,7 @@ public class PurchaseHistory {
         this.saleCost = saleCost;
     }
     /** Returns sale cost of all purchases */
-    double getSaleCost() {
+    public double getSaleCost() {
         return  saleCost;
     }
 
@@ -49,16 +61,16 @@ public class PurchaseHistory {
         this.productionCost = productionCost;
     }
     /** Returns production cost of all purchases */
-    double getProductionCost() {
+    public double getProductionCost() {
         return productionCost;
     }
 
     /** Returns profit made */
-    double getProfit() {
+    public double getProfit() {
         return getSaleCost() - SUPPLY_COST;
     }
     /** Returns total cost of supplies */
-    double getSupplyCost() {
+    public double getSupplyCost() {
         return SUPPLY_COST;
     }
 
@@ -80,7 +92,16 @@ public class PurchaseHistory {
     }
 
     /** Returns a list of all purchases in the purchase history array */
-    ArrayList<Purchase> getAllPurchases() {
+    public ArrayList<Purchase> getAllPurchases() {
         return PURCHASES;
+    }
+    public int getSupplyChicken () {
+        return SUPPLY_CHICKEN;
+    }
+    public int getSupplyBurger () {
+        return SUPPLY_BURGER;
+    }
+    public int getMonth () {
+        return MONTH;
     }
 }

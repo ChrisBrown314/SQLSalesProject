@@ -43,7 +43,7 @@ public class Generate {
     }
     /** Generates a purchase history given supply limits and date information */
     public static PurchaseHistory purchaseHistory(int supplyBurger, int supplyChicken, int year, int month) {
-        PurchaseHistory generatedPH = new PurchaseHistory(supplyBurger, supplyChicken);
+        PurchaseHistory generatedPH = new PurchaseHistory(supplyBurger, supplyChicken, month);
         boolean loop = true;
         int productCount = 0;
         int randomCondition = RANDOM.nextInt(1600)+500;
