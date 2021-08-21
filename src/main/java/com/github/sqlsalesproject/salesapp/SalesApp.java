@@ -10,6 +10,8 @@ import java.io.IOException;
 
 /** Launches the app and sets up JavaFX */
 public class SalesApp extends Application {
+//TODO - cleanup javadoc comments with all necessary details
+//TODO - make sure line width does not exceed 100
 
     /** Loads fxml scene, sets window properties, and shows the window */
     @Override

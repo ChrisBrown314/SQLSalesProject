@@ -8,9 +8,10 @@ import java.util.Random;
 
 /** Generates objects with random values for testing purposes */
 public class Generate {
-    //TODO - cleanup code some
+    /** Random object for use in generating random values */
     private static final Random RANDOM = new Random();
 
+    //Date Generation//
     /** Generates a date given a year and month */
     static LocalDate date (int year, int month) {
         //Ensures there aren't any errors with incorrect day month combinations
@@ -22,6 +23,7 @@ public class Generate {
         return LocalDate.of(year, month, day);
     }
 
+    //Purchase Generation//
     /** Generates a single purchase given a year and month*/
     public static Purchase purchase (int year, int month) {
         //Generate purchase date randomly
@@ -39,7 +41,6 @@ public class Generate {
         }
         return new Purchase(dateInfo, productList);
     }
-
     /** Generates a purchase history given supply limits and date information */
     public static PurchaseHistory purchaseHistory(int supplyBurger, int supplyChicken, int year, int month) {
         PurchaseHistory generatedPH = new PurchaseHistory(supplyBurger, supplyChicken);

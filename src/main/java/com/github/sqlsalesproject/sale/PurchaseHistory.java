@@ -7,6 +7,8 @@ import java.util.ArrayList;
 /** Group of Purchases */
 public class PurchaseHistory {
     //TODO - make more scalable and modular
+    //TODO - total of each sold
+    //TODO - Make the supplies more in depth: separate ingredients, expiration date, etc.
     private final ArrayList<Purchase> PURCHASES;
     private double saleCost;
     private double productionCost;
@@ -15,6 +17,7 @@ public class PurchaseHistory {
     private final double SUPPLY_COST;
     private int burgerUsed;
     private int chickenUsed;
+
 
     /** Constructs a purchase history given a purchase array list */
     public PurchaseHistory(int supplyBurger, int supplyChicken) {

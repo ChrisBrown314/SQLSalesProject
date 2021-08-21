@@ -10,7 +10,8 @@ public class Purchase implements Comparable<Purchase> {
     private final double PRODUCTION_COST;
     private final LocalDate PURCHASE_DATE; //In the format of hour:minute AM/PM month-day-year
     private final double SALE_PRICE;
-    private final int CHICKEN_AMOUNT;
+    private final int SANDWICH_AMOUNT;
+    private final int STRIP_AMOUNT;
     private final int HAMBURGER_AMOUNT;
 
     /** Constructs a purchase with given string and product list */
@@ -29,7 +30,8 @@ public class Purchase implements Comparable<Purchase> {
         PURCHASE_DATE = localPurchaseDate;
         SALE_PRICE = calcTotalSalePrice(productsPurchased);
         PRODUCTION_COST = calcTotalProductionCost(productsPurchased);
-        CHICKEN_AMOUNT = getNumberProducts("chicken sandwich", productsPurchased)+getNumberProducts("chicken strips", productsPurchased);
+        SANDWICH_AMOUNT = getNumberProducts("chicken sandwich", productsPurchased);
+        STRIP_AMOUNT = getNumberProducts("chicken strips", productsPurchased);
         HAMBURGER_AMOUNT = getNumberProducts("hamburger", productsPurchased);
     }
     /** Constructs a purchase from a local date and products purchased*/
@@ -37,12 +39,13 @@ public class Purchase implements Comparable<Purchase> {
         PURCHASE_DATE = purchaseDate;
         SALE_PRICE = calcTotalSalePrice(productsPurchased);
         PRODUCTION_COST = calcTotalProductionCost(productsPurchased);
-        CHICKEN_AMOUNT = getNumberProducts("chicken sandwich", productsPurchased)+getNumberProducts("chicken strips", productsPurchased);
+        SANDWICH_AMOUNT = getNumberProducts("chicken sandwich", productsPurchased);
+        STRIP_AMOUNT = getNumberProducts("chicken strips", productsPurchased);
         HAMBURGER_AMOUNT = getNumberProducts("hamburger", productsPurchased);
     }
 
     /** Returns the date of the purchase */
-    LocalDate getDate() {
+    public LocalDate getDate() {
         return PURCHASE_DATE;
     }
     /** Returns the date of purchase as a string */
@@ -98,7 +101,13 @@ public class Purchase implements Comparable<Purchase> {
     }
 
     public int getNumberChicken() {
-        return CHICKEN_AMOUNT;
+        return STRIP_AMOUNT+SANDWICH_AMOUNT;
+    }
+    public int getNumberSandwich () {
+        return SANDWICH_AMOUNT;
+    }
+    public int getNumberStrip () {
+        return STRIP_AMOUNT;
     }
     public int getNumberHamburger() {
         return HAMBURGER_AMOUNT;
