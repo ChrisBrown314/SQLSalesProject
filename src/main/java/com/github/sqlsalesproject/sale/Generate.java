@@ -1,7 +1,5 @@
 package com.github.sqlsalesproject.sale;
 
-import com.github.sqlsalesproject.tools.OverSupplyLimitException;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;

@@ -8,12 +8,8 @@ public class PurchaseHistory {
     private final ArrayList<Purchase> PURCHASES;
     private double salePrice;
     private double productionCost;
-    //private final int SUPPLY_CHICKEN;
-    //private final int SUPPLY_BURGER;
     private double supplyCost;
     private final int MONTH;
-    //private int burgerUsed;
-    //private int chickenUsed;
 
 
     /** Constructs a purchase history given a purchase array list */
@@ -86,7 +82,8 @@ public class PurchaseHistory {
     }
 
     //Month Information//
-    public int getMonth () {
+    public int getMonth() {
         return MONTH;
     }
+
 }

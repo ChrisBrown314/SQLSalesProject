@@ -5,8 +5,10 @@ import com.github.sqlsalesproject.sale.Product;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.Objects;
 
 /** Launches the app and sets up JavaFX */
 public class SalesApp extends Application {
@@ -19,9 +21,11 @@ public class SalesApp extends Application {
         //TODO Comments better?
         //TODO clean up, maybe split up and create a separate scene loader class
         FXMLLoader sceneLoader = new FXMLLoader(getClass().getResource("/fxmlResources/sales-app.fxml"));
-        Scene scene = new Scene(sceneLoader.load(), 320, 240);
+        Scene scene = new Scene(sceneLoader.load());
         stage.setScene(scene);
-        stage.setTitle("Sales Examination App");
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/AppIcon.png"))));
+        stage.setTitle("SQL Sales Project");
+        stage.resizableProperty().set(false);
         stage.show();
     }
 

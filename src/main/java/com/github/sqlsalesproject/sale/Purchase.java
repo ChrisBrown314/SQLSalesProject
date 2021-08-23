@@ -67,7 +67,7 @@ public class Purchase implements Comparable<Purchase> {
         return totalProductionCost;
     }
     /** Returns cached production cost */
-    public double getTotalProductionCost() {
+    public Double getTotalProductionCost() {
         return PRODUCTION_COST;
     }
 
@@ -80,12 +80,12 @@ public class Purchase implements Comparable<Purchase> {
         return totalSalePrice;
     }
     /**Returns cached sale price*/
-    public double getTotalSalePrice () {
+    public Double getTotalSalePrice () {
         return SALE_PRICE;
     }
 
     /** Calculates the profit made from the purchase*/
-    public double getProfitMade () {
+    public Double getProfitMade () {
         return SALE_PRICE - PRODUCTION_COST;
     }
 
@@ -115,5 +115,17 @@ public class Purchase implements Comparable<Purchase> {
     /** Returns how many burgers were purchased */
     public int getNumberHamburger() {
         return HAMBURGER_AMOUNT;
+    }
+    /** Returns month of purchase */
+    public Integer getMonth() {
+        return PURCHASE_DATE.getMonthValue();
+    }
+    /** Returns day of purchase */
+    public Integer getDay() {
+        return PURCHASE_DATE.getDayOfMonth();
+    }
+    /** Returns year of purchase */
+    public Integer getYear() {
+        return PURCHASE_DATE.getYear();
     }
 }

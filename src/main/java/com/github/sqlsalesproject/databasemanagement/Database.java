@@ -191,7 +191,6 @@ public class Database {
                     productList.add(Product.CHICKEN_SANDWICH);
                     sandwich--;
                 }
-                for (Product product : productList) {System.out.println(product.toString());}
                 purchaseList.add(new Purchase(purchaseDate, productList));
             }
             purchaseInformation.close();
