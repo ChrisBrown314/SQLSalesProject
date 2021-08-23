@@ -2,6 +2,7 @@ package com.github.sqlsalesproject.fxmlcontrollers;
 
 import com.github.sqlsalesproject.sale.Purchase;
 import com.github.sqlsalesproject.sale.PurchaseHistory;
+import com.github.sqlsalesproject.sale.Recommendation;
 import javafx.collections.FXCollections;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -38,21 +39,41 @@ public class TableController {
     static void getHistoryTable(ArrayList<PurchaseHistory> purchaseHistory, TableView table) {
         table.getColumns().clear();
         TableColumn month = new TableColumn("Month");
+        month.setCellValueFactory(new PropertyValueFactory<>("Month"));
         TableColumn year = new TableColumn("Year");
+        year.setCellValueFactory(new PropertyValueFactory<>("Year"));
         TableColumn numPurchase = new TableColumn("Purchases Made");
+        numPurchase.setCellValueFactory(new PropertyValueFactory<>("NumPurchases"));
         TableColumn profit = new TableColumn("Profit");
-        TableColumn productionCost = new TableColumn("Production Cost");
+        profit.setCellValueFactory(new PropertyValueFactory<>("Profit"));
+        TableColumn productionCost = new TableColumn("Supply Cost");
+        productionCost.setCellValueFactory(new PropertyValueFactory<>("SupplyCost"));
         TableColumn salePrice = new TableColumn("Sale Price");
-        table.getColumns().addAll(month, year, profit, productionCost, salePrice);
+        salePrice.setCellValueFactory(new PropertyValueFactory<>("SalePrice"));
+        table.getColumns().addAll(month, year, numPurchase, profit, productionCost, salePrice);
+        table.setItems(FXCollections.observableList(purchaseHistory));
     }
     static void getRecommendedTable(ArrayList<PurchaseHistory> purchaseHistory, TableView table) {
         table.getColumns().clear();
+        ArrayList<Recommendation> recommendations = new ArrayList<>();
+        for (PurchaseHistory historyToAnalyze : purchaseHistory) {
+            int year = historyToAnalyze.getYear();
+            int month = historyToAnalyze.getMonth();
+            recommendations.add(new Recommendation(year, month, historyToAnalyze));
+        }
         TableColumn month = new TableColumn("Month");
+        month.setCellValueFactory(new PropertyValueFactory<>("Month"));
         TableColumn burger = new TableColumn("Recommended Burgers");
+        burger.setCellValueFactory(new PropertyValueFactory<>("RecommendedBurgers"));
         TableColumn chicken = new TableColumn("Recommended Chicken");
+        chicken.setCellValueFactory(new PropertyValueFactory<>("RecommendedChicken"));
         TableColumn expectedProfit = new TableColumn("Expected Profit");
+        expectedProfit.setCellValueFactory(new PropertyValueFactory<>("ExpectedProfit"));
         TableColumn expectedProductionCost = new TableColumn("Expected Production Cost");
+        expectedProductionCost.setCellValueFactory(new PropertyValueFactory<>("ExpectedProductionCost"));
         TableColumn expectedSalePrice = new TableColumn("Expected Sale Price");
+        expectedSalePrice.setCellValueFactory(new PropertyValueFactory<>("ExpectedSalePrice"));
         table.getColumns().addAll(month, burger, chicken, expectedProfit, expectedProductionCost, expectedSalePrice);
+        table.setItems(FXCollections.observableList(recommendations));
     }
 }

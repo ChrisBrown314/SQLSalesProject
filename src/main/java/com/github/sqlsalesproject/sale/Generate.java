@@ -45,7 +45,7 @@ public class Generate {
     public static PurchaseHistory purchaseHistory(int supplyBurger, int supplyChicken, int year, int month) {
         //Initialize variables
         Supply supply = new Supply(new int[] {supplyBurger, supplyChicken});
-        PurchaseHistory generatedPH = new PurchaseHistory(0, month);
+        PurchaseHistory generatedPH = new PurchaseHistory(0, month, year);
         //Loop variables
         boolean loop = true;
         int productCount = 0;

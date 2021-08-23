@@ -75,8 +75,13 @@ public class SalesAppController {
             for (int month = 1; month < 13; month++) {
                 PurchaseHistory purchaseHistory = Generate.purchaseHistory(2500, 2500, 2020, month);
                 Database.getDatabase().writePurchaseHistory(purchaseHistory);
-                storedHistory.add(Database.getDatabase().fetchPurchaseHistory(month)); //Possibly split off into own method
             }
+            for (int year : Database.getDatabase().getAllYears()) {
+                for (int month = 1; month < 13; month++) {
+                    storedHistory.add(Database.getDatabase().fetchPurchaseHistory(month, year)); //Possibly split off into own method
+                }
+            }
+
         }  catch (PurchaseDoesNotExistException | SQLException exception) {
             System.err.println("ERR: Failed to regenerate data! Quitting!");
             System.err.println(exception.getMessage());

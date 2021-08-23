@@ -82,7 +82,7 @@ public class Database {
     private void createHistoryTable() throws SQLException {
         Statement statement = Connection.createStatement();
         statement.executeUpdate("CREATE TABLE history ( month INT NOT NULL," +
-                " supplyCost DOUBLE NOT NULL);");
+                "year INT NOT NULL, supplyCost DOUBLE NOT NULL);");
         statement.close();
 
     }
@@ -111,6 +111,7 @@ public class Database {
         Statement statement = Connection.createStatement();
         statement.executeUpdate("INSERT INTO history VALUES (" +
                 purchaseHistory.getMonth() + ", " +
+                purchaseHistory.getYear() + ", " +
                 purchaseHistory.getSupplyCost() +");");
         for (Purchase purchase : purchaseHistory.getAllPurchases()) {
             writePurchase(purchase);
@@ -121,11 +122,11 @@ public class Database {
 
     // Fetching Purchase History //
     /**Fetch the Purchase History for a given month from the database*/
-    public PurchaseHistory fetchPurchaseHistory(int month) throws PurchaseDoesNotExistException{
+    public PurchaseHistory fetchPurchaseHistory(int month, int year) throws PurchaseDoesNotExistException{
         if (historyDataExists(month)) {
             ArrayList<Purchase> purchaseList = fetchPurchaseData(month);
             double supplyCost = fetchSupplyCost(month);
-            return new PurchaseHistory(supplyCost, month, purchaseList);
+            return new PurchaseHistory(supplyCost, month, year, purchaseList);
         } else {
             System.err.println("ERR: Tried to fetch purchase history data that did not exist!");
             throw new PurchaseDoesNotExistException("Purchase History doesn't exist!");
@@ -156,7 +157,7 @@ public class Database {
             ResultSet historyInformation = statement.executeQuery("SELECT * FROM " +
                     "history WHERE month = " + month);
             historyInformation.next();
-            supplyCost = historyInformation.getDouble(2);
+            supplyCost = historyInformation.getDouble(3);
             historyInformation.close();
             statement.close();
             return  supplyCost;
@@ -200,5 +201,23 @@ public class Database {
             System.err.println(sqlException.getMessage());
         }
         return purchaseList;
+    }
+
+    public ArrayList<Integer> getAllYears() {
+        try {
+            Statement statement = Connection.createStatement();
+            ResultSet yearInfo = statement.executeQuery("SELECT DISTINCT year FROM history");
+            ArrayList<Integer> yearList = new ArrayList<>();
+            while (yearInfo.next()) {
+                yearList.add(yearInfo.getInt(1));
+            }
+            yearInfo.close();
+            statement.close();
+            return yearList;
+        } catch (SQLException sqlException) {
+            System.err.println("ERR: Failed to get list of years! Returning empty array list!");
+            System.err.println(sqlException.getMessage());
+        }
+        return new ArrayList<>();
     }
 }
