@@ -2,12 +2,14 @@ package com.github.sqlsalesproject.sale;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.SplittableRandom;
+
 
 /** Generates objects with random values for testing purposes */
 public class Generate {
     /** Random object for use in generating random values */
-    private static final Random RANDOM = new Random();
+    private static final SplittableRandom RANDOM = new SplittableRandom();
+
 
     //Date Generation//
     /** Generates a date given a year and month */

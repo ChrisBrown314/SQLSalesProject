@@ -180,17 +180,19 @@ public class Database {
                 int strip = purchaseInformation.getInt(4);
                 int sandwich = purchaseInformation.getInt(5);
                 ArrayList<Product> productList = new ArrayList<>();
-                while (burger != 0) {
-                    productList.add(Product.HAMBURGER);
-                    burger--;
-                }
-                while (strip != 0) {
-                    productList.add(Product.CHICKEN_STRIPS);
-                    strip--;
-                }
-                while (sandwich != 0) {
-                    productList.add(Product.CHICKEN_SANDWICH);
-                    sandwich--;
+                while (burger != 0 || strip != 0 || sandwich != 0) {
+                    if (burger > 0) {
+                        productList.add(Product.HAMBURGER);
+                        burger--;
+                    }
+                    if (strip > 0) {
+                        productList.add(Product.CHICKEN_STRIPS);
+                        strip--;
+                    }
+                    if (sandwich > 0) {
+                        productList.add(Product.CHICKEN_SANDWICH);
+                        sandwich--;
+                    }
                 }
                 purchaseList.add(new Purchase(purchaseDate, productList));
             }

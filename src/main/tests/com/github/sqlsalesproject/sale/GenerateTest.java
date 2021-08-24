@@ -17,7 +17,7 @@ class GenerateTest {
         generatedPurchase = Generate.purchase(2020, 8);
     }
 
-    @RepeatedTest(10)
+    @RepeatedTest(100000)
     @DisplayName("Outputs generated data for purchases just to check if everything is working properly.")
     void generatedPurchaseTest () {
         System.out.println("Generated Date: " + generatedDate.toString());
