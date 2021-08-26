@@ -2,7 +2,7 @@ module com.github.sqlsalesproject.sqlsalesproject {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
-
+    requires dsiutils;
 
 
     exports com.github.sqlsalesproject.databasemanagement;

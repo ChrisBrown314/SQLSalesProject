@@ -1,5 +1,6 @@
 package com.github.sqlsalesproject.databasemanagement;
 
+import com.github.sqlsalesproject.sale.Generate;
 import com.github.sqlsalesproject.sale.Product;
 import com.github.sqlsalesproject.sale.Purchase;
 import com.github.sqlsalesproject.sale.PurchaseHistory;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 
 
 public class Database {
+    //TODO - user login
+    //TODO - better formatting for sql queries
     //Program requires mysql server set up on port 3306 with a user having this username and
     //password and a salesproject schema
     private static final String CONNECTION_INFO = "jdbc:mysql://localhost:3306/salesproject";
@@ -96,15 +99,14 @@ public class Database {
 
     // Writing to Database //
     /** Writes a purchase to the purchase table in the database */
-    private void writePurchase(Purchase purchase) throws SQLException {
-        Statement statement = Connection.createStatement();
+    private void writePurchase(Purchase purchase, Statement statement) throws SQLException {
+
         statement.executeUpdate("INSERT INTO purchase VALUES ('" +
                 purchase.getDateAsString() + "', " +
                 purchase.getDate().getMonthValue() + ", " +
                 purchase.getNumberHamburger()+ ", " +
                 purchase.getNumberSandwich()+ ", " +
                 purchase.getNumberStrip() + ");");
-        statement.close();
     }
     /** Writes a purchase history to the database */
     public void writePurchaseHistory (PurchaseHistory purchaseHistory) throws SQLException {
@@ -113,12 +115,24 @@ public class Database {
                 purchaseHistory.getMonth() + ", " +
                 purchaseHistory.getYear() + ", " +
                 purchaseHistory.getSupplyCost() +");");
+        StringBuilder purchaseQuery = new StringBuilder("INSERT INTO purchase VALUES ");
+        boolean first = true;
         for (Purchase purchase : purchaseHistory.getAllPurchases()) {
-            writePurchase(purchase);
+            if (!first) {
+                purchaseQuery.append(",");
+            }
+            purchaseQuery.append(getPurchaseValues(purchase));
+            first = false;
         }
+        purchaseQuery.append(";");
+        System.out.println(purchaseQuery.toString());
+        statement.executeUpdate(purchaseQuery.toString());
         statement.close();
     }
-
+    private String getPurchaseValues(Purchase purchase){
+        return String.format("('%s', %o, %o, %o, %o)", purchase.getDateAsString(), purchase.getDate().getMonthValue(),
+                purchase.getNumberHamburger(), purchase.getNumberSandwich(), purchase.getNumberStrip());
+    }
 
     // Fetching Purchase History //
     /**Fetch the Purchase History for a given month from the database*/
@@ -180,7 +194,7 @@ public class Database {
                 int strip = purchaseInformation.getInt(4);
                 int sandwich = purchaseInformation.getInt(5);
                 ArrayList<Product> productList = new ArrayList<>();
-                while (burger != 0 || strip != 0 || sandwich != 0) {
+                while ((burger + strip + sandwich) != 0) {
                     if (burger > 0) {
                         productList.add(Product.HAMBURGER);
                         burger--;
@@ -221,5 +235,49 @@ public class Database {
             System.err.println(sqlException.getMessage());
         }
         return new ArrayList<>();
+    }
+
+    public static void regenerateData (ArrayList<PurchaseHistory> purchaseHistory) {
+        try {
+            long startTime = System.currentTimeMillis();
+            purchaseHistory.clear();
+            getDatabase().clearTables();
+            System.out.println("Starting generation... " + (System.currentTimeMillis()-startTime));
+            for (int month = 1; month < 13; month++) {
+                System.out.println("Generating purchase history for month " + month + ". " + (System.currentTimeMillis()-startTime));
+                PurchaseHistory generatedPH = Generate.purchaseHistory(2500, 2500, 2020, month);
+                System.out.println("Writing! " + (System.currentTimeMillis()-startTime));
+                getDatabase().writePurchaseHistory(generatedPH);
+            }
+            for (int year : getDatabase().getAllYears()) {
+                System.out.println("Fetching data from " + year + ". " + (System.currentTimeMillis()-startTime));
+                for (int month = 1; month < 13; month++) {
+                    purchaseHistory.add(getDatabase().fetchPurchaseHistory(month, year)); //Possibly split off into own method
+                }
+            }
+
+        }  catch (PurchaseDoesNotExistException | SQLException exception) {
+            System.err.println("ERR: Failed to regenerate data! Quitting!");
+            System.err.println(exception.getMessage());
+            System.exit(-1);
+        }
+
+    }
+
+    public static void fetchData (ArrayList<PurchaseHistory> purchaseHistory) {
+        try {
+            long startTime = System.currentTimeMillis();
+            purchaseHistory.clear();
+            for (int year : getDatabase().getAllYears()) {
+                System.out.println("Fetching data from " + year + ". " + (System.currentTimeMillis()-startTime));
+                for (int month = 1; month < 13; month++) {
+                    purchaseHistory.add(getDatabase().fetchPurchaseHistory(month, year)); //Possibly split off into own method
+                }
+            }
+        }  catch (PurchaseDoesNotExistException exception) {
+            System.err.println("ERR: Failed to regenerate data! Quitting!");
+            System.err.println(exception.getMessage());
+            System.exit(-1);
+        }
     }
 }

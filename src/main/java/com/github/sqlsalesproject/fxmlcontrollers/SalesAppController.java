@@ -21,7 +21,7 @@ public class SalesAppController {
     @FXML
     public void initialize () {
         storedHistory = new ArrayList<>();
-        regenerateData();
+        Database.fetchData(storedHistory);
         TableController.getPurchaseTable(storedHistory, tableView);
         viewDropDown.getItems().add("View Purchases");
         viewDropDown.getItems().add("View Profit by Month");
@@ -53,7 +53,7 @@ public class SalesAppController {
     }
     /** Regenerates data when regenerate button is pressed */
     public void regenDataAction(ActionEvent actionEvent) {
-        regenerateData();
+        Database.regenerateData(storedHistory);
         showInformationPopup("Regenerate database");
         updateTable();
     }
@@ -67,26 +67,5 @@ public class SalesAppController {
         InfoPopup.show();
     }
 
-    /** Regenerates the data in the database and tables */
-    private void regenerateData () {
-        try {
-            storedHistory.clear();
-            Database.getDatabase().clearTables();
-            for (int month = 1; month < 13; month++) {
-                PurchaseHistory purchaseHistory = Generate.purchaseHistory(2500, 2500, 2020, month);
-                Database.getDatabase().writePurchaseHistory(purchaseHistory);
-            }
-            for (int year : Database.getDatabase().getAllYears()) {
-                for (int month = 1; month < 13; month++) {
-                    storedHistory.add(Database.getDatabase().fetchPurchaseHistory(month, year)); //Possibly split off into own method
-                }
-            }
 
-        }  catch (PurchaseDoesNotExistException | SQLException exception) {
-            System.err.println("ERR: Failed to regenerate data! Quitting!");
-            System.err.println(exception.getMessage());
-            System.exit(-1);
-        }
-
-    }
 }

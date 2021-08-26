@@ -2,14 +2,14 @@ package com.github.sqlsalesproject.sale;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.SplittableRandom;
+
+import it.unimi.dsi.util.XoShiRo256StarStarRandom;
 
 
 /** Generates objects with random values for testing purposes */
 public class Generate {
     /** Random object for use in generating random values */
-    private static final SplittableRandom RANDOM = new SplittableRandom();
-
+    private static final XoShiRo256StarStarRandom RANDOM = new XoShiRo256StarStarRandom();
 
     //Date Generation//
     /** Generates a date given a year and month */
