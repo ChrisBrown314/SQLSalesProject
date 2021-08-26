@@ -6,14 +6,23 @@ import java.util.ArrayList;
 import it.unimi.dsi.util.XoShiRo256StarStarRandom;
 
 
-/** Generates objects with random values for testing purposes */
+/**The Generate class.
+ * Generates purchase information for demonstrating the program.
+ * @author Christopher Brown
+ */
 public class Generate {
-    /** Random object for use in generating random values */
+
+    /**XoShiRo256** Random generator. Random Number generator which utilizes the xoshiro256**
+     * algorithm from the DSI Utilities library.*/
     private static final XoShiRo256StarStarRandom RANDOM = new XoShiRo256StarStarRandom();
 
-    //Date Generation//
-    /** Generates a date given a year and month */
-    static LocalDate date (int year, int month) {
+
+    /**Generates a date given a year and month.
+     * @param year The year for the generated date.
+     * @param month The month for the generated date.
+     * @return Local date object with given year and month, with a randomly generated day.
+     */
+    static LocalDate generateDate(int year, int month) {
         //Ensures there aren't any errors with incorrect day month combinations
         int day = switch (month) {
             case 2 -> RANDOM.nextInt(27) + 1;
@@ -23,14 +32,12 @@ public class Generate {
         return LocalDate.of(year, month, day);
     }
 
-    //Purchase Generation//
-    /** Generates a single purchase given a year and month*/
-    public static Purchase purchase (int year, int month) {
-        //Generate purchase date randomly
-        LocalDate dateInfo = Generate.date(year, month) ;
-        //Generate Products randomly
+    /**Generates a list of products for use with {@link Generate#generatePurchase}.
+     * @return Array List containing 1 to 4 random products.
+     */
+    private static ArrayList<Product> generateProducts() {
         ArrayList<Product> productList = new ArrayList<>();
-        int productCount = RANDOM.nextInt(3) + 1; // +1 ensures that there is at least 1 product
+        int productCount = RANDOM.nextInt(3) + 1;
         for (int count = 0; count < productCount; count++) {
             int product = RANDOM.nextInt(3);
             switch (product) {
@@ -39,32 +46,44 @@ public class Generate {
                 case 2 -> productList.add(Product.HAMBURGER);
             }
         }
+        return productList;
+    }
+
+    /**Generates a single purchase given a year and month.
+     * @param year The year the purchase was made.
+     * @param month the month the purchase was made.
+     * @return Randomly generated purchase with date and product information.
+     */
+    static Purchase generatePurchase(int year, int month) {
+        LocalDate dateInfo = Generate.generateDate(year, month) ;
+        ArrayList<Product> productList = generateProducts();
         return new Purchase(dateInfo, productList);
     }
 
-    //Purchase History Generation//
-    /** Generates a purchase history given supply limits and date information */
-    public static PurchaseHistory purchaseHistory(int supplyBurger, int supplyChicken, int year, int month) {
-        //Initialize variables
+    /** Generates the purchase history for a given month.
+     * @param supplyBurger The amount of burger supplies available.
+     * @param supplyChicken The amount of chicken supplies available.
+     * @param year The year the purchase history covers.
+     * @param month The month the purchase history covers.
+     * @return Randomly generated purchase history containing a month's worth of purchases.
+     */
+    public static PurchaseHistory generatePurchaseHistory(int supplyBurger, int supplyChicken, int year, int month) {
         Supply supply = new Supply(new int[] {supplyBurger, supplyChicken});
-        PurchaseHistory generatedPH = new PurchaseHistory(0, month, year);
-        //Loop variables
-        boolean loop = true;
+        PurchaseHistory generatedPurchaseHistory = new PurchaseHistory(0, month, year);
+        boolean supplyNotExceeded = true;
         int productCount = 0;
-        int randomCondition = RANDOM.nextInt(1600)+500;
-        //Loop to generate purchase history
-        while (productCount < randomCondition && loop) {
-            Purchase generatedPurchase = Generate.purchase(year, month);
+        int maxProductCount = RANDOM.nextInt(1600)+500;
+        while (productCount < maxProductCount && supplyNotExceeded) {
+            Purchase generatedPurchase = generatePurchase(year, month);
             supply.useSupplies(generatedPurchase.getNumberHamburger(), generatedPurchase.getNumberChicken());
             if (!supply.suppliesExceeded()) {
-                generatedPH.add(generatedPurchase);
+                generatedPurchaseHistory.add(generatedPurchase);
                 productCount++;
             } else {
-                loop = false;
+                supplyNotExceeded = false;
             }
         }
-        //Sets supply cost for generated Purchase History
-        generatedPH.setSupplyCost(supply.getSupplyCost());
-        return generatedPH;
+        generatedPurchaseHistory.setSupplyCost(supply.getSupplyCost());
+        return generatedPurchaseHistory;
     }
 }

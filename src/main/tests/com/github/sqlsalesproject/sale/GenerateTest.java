@@ -13,8 +13,8 @@ class GenerateTest {
 
     @BeforeEach
     void setUp() {
-        generatedDate = Generate.date(2020, 8);
-        generatedPurchase = Generate.purchase(2020, 8);
+        generatedDate = Generate.generateDate(2020, 8);
+        generatedPurchase = Generate.generatePurchase(2020, 8);
     }
 
     @RepeatedTest(100000)
@@ -29,7 +29,7 @@ class GenerateTest {
     @Test
     @DisplayName("Outputs generated data for purchase history just to check if everything is working properly.")
     void generatedPurchaseHistoryTest() {
-        PurchaseHistory generatedPH = Generate.purchaseHistory(2500, 5000, 2020, 1);
+        PurchaseHistory generatedPH = Generate.generatePurchaseHistory(2500, 5000, 2020, 1);
         System.out.println("\nPurchase History information: ");
         System.out.println("Production cost: " + generatedPH.getProductionCost());
         System.out.println("Sale price: " + generatedPH.getSalePrice());
