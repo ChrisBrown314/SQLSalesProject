@@ -50,6 +50,7 @@ public class Generate {
     }
 
     /**Generates a single purchase given a year and month.
+     * See: {@link Purchase}
      * @param year The year the purchase was made.
      * @param month the month the purchase was made.
      * @return Randomly generated purchase with date and product information.
@@ -61,6 +62,7 @@ public class Generate {
     }
 
     /** Generates the purchase history for a given month.
+     * See: {@link PurchaseHistory}
      * @param supplyBurger The amount of burger supplies available.
      * @param supplyChicken The amount of chicken supplies available.
      * @param year The year the purchase history covers.
