@@ -5,16 +5,23 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class Purchase implements Comparable<Purchase> {
-    //TODO - Possibly round the prices and profit to two decimal points
-    //TODO - comment all final variables
+    /**Total production cost of the purchase*/
     private final double PRODUCTION_COST;
+    /**The date the purchase occurred*/
     private final LocalDate PURCHASE_DATE; //In the format of hour:minute AM/PM month-day-year
+    /**The total sale price of the purchase*/
     private final double SALE_PRICE;
+    /**The number of sandwiches purchased*/
     private final int SANDWICH_AMOUNT;
+    /**The number of chicken strips purchased*/
     private final int STRIP_AMOUNT;
+    /**The number of hamburgers purchased*/
     private final int HAMBURGER_AMOUNT;
 
-    /** Constructs a purchase with given string and product list */
+    /** Purchase Constructor.
+     * @param purchaseDate The date of the purchase in form yyyy-mm-dd
+     * @param productsPurchased A list of all products purchased.
+     */
     public Purchase(String purchaseDate, ArrayList<Product> productsPurchased) {
         LocalDate localPurchaseDate;
         //Date Information in form yyyy-mm-dd
@@ -34,7 +41,11 @@ public class Purchase implements Comparable<Purchase> {
         STRIP_AMOUNT = getNumberProducts("chicken strips", productsPurchased);
         HAMBURGER_AMOUNT = getNumberProducts("hamburger", productsPurchased);
     }
-    /** Constructs a purchase from a local date and products purchased*/
+
+    /** Purchase Constructor.
+     * @param purchaseDate A local date storing the date of the purchase.
+     * @param productsPurchased A list of all products purchased.
+     */
     public Purchase(LocalDate purchaseDate, ArrayList<Product> productsPurchased) {
         PURCHASE_DATE = purchaseDate;
         SALE_PRICE = calcTotalSalePrice(productsPurchased);
@@ -48,17 +59,22 @@ public class Purchase implements Comparable<Purchase> {
     public LocalDate getDate() {
         return PURCHASE_DATE;
     }
+
     /** Returns the date of purchase as a string */
     public String getDateAsString() {
         return PURCHASE_DATE.toString();
     }
+
     /** Compares two purchases by their dates for sorting */
     @Override
     public int compareTo(Purchase purchase) {
         return PURCHASE_DATE.compareTo(purchase.PURCHASE_DATE);
     }
 
-    /** Calculates Production Cost for purchase */
+    /** Calculates production cost for purchase.
+     * @param productsPurchased List of all products purchased.
+     * @return Total production cost of the purchase.
+     */
     private double calcTotalProductionCost(ArrayList<Product> productsPurchased) {
         double totalProductionCost = 0.0;
         for (Product product : productsPurchased) {
@@ -71,7 +87,10 @@ public class Purchase implements Comparable<Purchase> {
         return PRODUCTION_COST;
     }
 
-    /** Calculates Sale Price of purchase*/
+    /** Calculates Sale Price of purchase.
+     * @param productsPurchased List of all products purchased.
+     * @return Total sale price of the purchase.
+     */
     private double calcTotalSalePrice(ArrayList<Product> productsPurchased) {
         double totalSalePrice = 0.0;
         for (Product product : productsPurchased) {
@@ -84,12 +103,16 @@ public class Purchase implements Comparable<Purchase> {
         return SALE_PRICE;
     }
 
-    /** Calculates the profit made from the purchase*/
+    /** Returns the profit made from the purchase*/
     public Double getProfitMade () {
         return SALE_PRICE - PRODUCTION_COST;
     }
 
-    /** Returns how many of a given product was sold in a given purchase */
+    //TODO - refactor to use enum instead of toString function to sum product by type.
+    /** Returns number of products for given product.
+     * @param productName The name of the product to count.
+     * @param productList List of all products in the purchase.
+     */
     private int getNumberProducts (String productName, ArrayList<Product> productList) {
         int productNumber = 0;
         for (Product product : productList) {
