@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import it.unimi.dsi.util.XoShiRo256StarStarRandom;
 
 
-/**The Generate class.
+/**Generate class.
  * Generates purchase information for demonstrating the program.
  * @author Christopher Brown
  */
@@ -16,23 +16,50 @@ public class Generate {
      * algorithm from the DSI Utilities library.*/
     private static final XoShiRo256StarStarRandom RANDOM = new XoShiRo256StarStarRandom();
 
-
-    /**Generates a date given a year and month.
-     * @param year The year for the generated date.
-     * @param month The month for the generated date.
-     * @return Local date object with given year and month, with a randomly generated day.
+    /** Generates the purchase history for a given month.
+     * See: {@link PurchaseHistory}
+     * @param supplyBurger The amount of burger supplies available.
+     * @param supplyChicken The amount of chicken supplies available.
+     * @param year The year the purchase history covers.
+     * @param month The month the purchase history covers.
+     * @param minNumPurchases The minimum number of purchases to generate for the purchase history.
+     * @param maxNumPurchases The maximum number of purchases to generate for the purchase history.
+     * @return Randomly generated purchase history containing a month's worth of purchases.
      */
-    static LocalDate generateDate(int year, int month) {
-        //Ensures there aren't any errors with incorrect day month combinations
-        int day = switch (month) {
-            case 2 -> RANDOM.nextInt(27) + 1;
-            case 4, 5, 9, 11 -> RANDOM.nextInt(29) + 1;
-            default -> RANDOM.nextInt(30) + 1;
-        };
-        return LocalDate.of(year, month, day);
+    public static PurchaseHistory generatePurchaseHistory(int supplyBurger, int supplyChicken, int year, int month, int minNumPurchases, int maxNumPurchases) {
+        Supply supplyTracker = new Supply(new int[] {supplyBurger, supplyChicken});
+        PurchaseHistory generatedPurchaseHistory = new PurchaseHistory(0, month, year);
+        boolean supplyNotExceeded = true;
+        int purchaseCount = 0;
+        int maxPurchaseCount = RANDOM.nextInt(maxNumPurchases-minNumPurchases)+minNumPurchases;
+        while (purchaseCount < maxPurchaseCount && supplyNotExceeded) {
+            Purchase generatedPurchase = generatePurchase(year, month);
+            supplyTracker.countUsedSupplies(generatedPurchase.getNumberHamburger(), generatedPurchase.getNumberChicken());
+            if (!supplyTracker.suppliesExceeded()) {
+                generatedPurchaseHistory.add(generatedPurchase);
+                purchaseCount++;
+            } else {
+                supplyNotExceeded = false;
+            }
+        }
+        generatedPurchaseHistory.setSupplyCost(supplyTracker.getSupplyCost());
+        return generatedPurchaseHistory;
+    }
+
+    /**Generates a single purchase given a year and month.
+     * See: {@link Purchase}
+     * @param year The year the purchase was made.
+     * @param month the month the purchase was made.
+     * @return Randomly generated purchase with date and product information.
+     */
+    static Purchase generatePurchase(int year, int month) {
+        LocalDate dateInfo = Generate.generateDate(year, month) ;
+        ArrayList<Product> productList = generateProducts();
+        return new Purchase(dateInfo, productList);
     }
 
     /**Generates a list of products for use with {@link Generate#generatePurchase}.
+     * See: {@link Product}
      * @return Array List containing 1 to 4 random products.
      */
     private static ArrayList<Product> generateProducts() {
@@ -49,41 +76,18 @@ public class Generate {
         return productList;
     }
 
-    /**Generates a single purchase given a year and month.
-     * @param year The year the purchase was made.
-     * @param month the month the purchase was made.
-     * @return Randomly generated purchase with date and product information.
+    /**Generates a {@link LocalDate} given a year and month.
+     * @param year The year for the generated date.
+     * @param month The month for the generated date.
+     * @return Local date object with given year and month, with a randomly generated day.
      */
-    static Purchase generatePurchase(int year, int month) {
-        LocalDate dateInfo = Generate.generateDate(year, month) ;
-        ArrayList<Product> productList = generateProducts();
-        return new Purchase(dateInfo, productList);
-    }
-
-    /** Generates the purchase history for a given month.
-     * @param supplyBurger The amount of burger supplies available.
-     * @param supplyChicken The amount of chicken supplies available.
-     * @param year The year the purchase history covers.
-     * @param month The month the purchase history covers.
-     * @return Randomly generated purchase history containing a month's worth of purchases.
-     */
-    public static PurchaseHistory generatePurchaseHistory(int supplyBurger, int supplyChicken, int year, int month) {
-        Supply supply = new Supply(new int[] {supplyBurger, supplyChicken});
-        PurchaseHistory generatedPurchaseHistory = new PurchaseHistory(0, month, year);
-        boolean supplyNotExceeded = true;
-        int productCount = 0;
-        int maxProductCount = RANDOM.nextInt(1600)+500;
-        while (productCount < maxProductCount && supplyNotExceeded) {
-            Purchase generatedPurchase = generatePurchase(year, month);
-            supply.useSupplies(generatedPurchase.getNumberHamburger(), generatedPurchase.getNumberChicken());
-            if (!supply.suppliesExceeded()) {
-                generatedPurchaseHistory.add(generatedPurchase);
-                productCount++;
-            } else {
-                supplyNotExceeded = false;
-            }
-        }
-        generatedPurchaseHistory.setSupplyCost(supply.getSupplyCost());
-        return generatedPurchaseHistory;
+    static LocalDate generateDate(int year, int month) {
+        //Ensures there aren't any errors with incorrect day month combinations
+        int day = switch (month) {
+            case 2 -> RANDOM.nextInt(27) + 1;
+            case 4, 5, 9, 11 -> RANDOM.nextInt(29) + 1;
+            default -> RANDOM.nextInt(30) + 1;
+        };
+        return LocalDate.of(year, month, day);
     }
 }

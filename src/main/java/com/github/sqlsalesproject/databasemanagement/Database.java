@@ -130,7 +130,7 @@ public class Database {
         statement.close();
     }
     private String getPurchaseValues(Purchase purchase){
-        return String.format("('%s', %o, %o, %o, %o)", purchase.getDateAsString(), purchase.getDate().getMonthValue(),
+        return String.format("('%s', %d, %d, %d, %d)", purchase.getDateAsString(), purchase.getMonth(),
                 purchase.getNumberHamburger(), purchase.getNumberSandwich(), purchase.getNumberStrip());
     }
 
@@ -245,8 +245,8 @@ public class Database {
             System.out.println("Starting generation... " + (System.currentTimeMillis()-startTime));
             for (int month = 1; month < 13; month++) {
                 System.out.println("Generating purchase history for month " + month + ". " + (System.currentTimeMillis()-startTime));
-                PurchaseHistory generatedPH = Generate.generatePurchaseHistory(2500, 2500, 2020, month);
-                System.out.println("Writing! " + (System.currentTimeMillis()-startTime));
+                PurchaseHistory generatedPH = Generate.generatePurchaseHistory(2500, 2500, 2020,
+                        month, 500, 2000);
                 getDatabase().writePurchaseHistory(generatedPH);
             }
             for (int year : getDatabase().getAllYears()) {

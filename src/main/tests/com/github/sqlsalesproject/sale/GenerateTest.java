@@ -29,7 +29,8 @@ class GenerateTest {
     @Test
     @DisplayName("Outputs generated data for purchase history just to check if everything is working properly.")
     void generatedPurchaseHistoryTest() {
-        PurchaseHistory generatedPH = Generate.generatePurchaseHistory(2500, 5000, 2020, 1);
+        PurchaseHistory generatedPH = Generate.generatePurchaseHistory(2500, 5000, 2020,
+                1, 500, 1600);
         System.out.println("\nPurchase History information: ");
         System.out.println("Production cost: " + generatedPH.getProductionCost());
         System.out.println("Sale price: " + generatedPH.getSalePrice());

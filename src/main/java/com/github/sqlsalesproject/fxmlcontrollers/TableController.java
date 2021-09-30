@@ -9,51 +9,56 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
+/**Table Controller class.
+ *
+ *
+ */
 public class TableController {
 
-    static void getPurchaseTable(ArrayList<PurchaseHistory> purchaseHistory, TableView table) {
-        table.getColumns().clear();
+    static void getPurchaseTable(ArrayList<PurchaseHistory> purchaseHistory, TableView<Purchase> purchaseTableView) {
+        purchaseTableView.getColumns().clear();
         //Column Information
-        TableColumn month = new TableColumn("Month");
+        TableColumn<Purchase, Integer> month = new TableColumn<>("Month");
         month.setCellValueFactory(new PropertyValueFactory<>("Month"));
-        TableColumn day = new TableColumn("Day");
+        TableColumn<Purchase, Integer> day = new TableColumn<>("Day");
         day.setCellValueFactory(new PropertyValueFactory<>("Day"));
-        TableColumn year = new TableColumn("Year");
+        TableColumn<Purchase, Integer> year = new TableColumn<>("Year");
         year.setCellValueFactory(new PropertyValueFactory<>("Year"));
-        TableColumn profit = new TableColumn("Profit");
-        profit.setCellValueFactory(new PropertyValueFactory<Purchase, Double>("ProfitMade"));
-        TableColumn productionCost = new TableColumn("Production Cost");
+        TableColumn<Purchase, Double> profit = new TableColumn<>("Profit");
+        profit.setCellValueFactory(new PropertyValueFactory<>("ProfitMade"));
+        TableColumn<Purchase, Double> productionCost = new TableColumn<>("Production Cost");
         productionCost.setCellValueFactory(new PropertyValueFactory<>("TotalProductionCost"));
-        TableColumn salePrice = new TableColumn("Sale Price");
+        TableColumn<Purchase, Double> salePrice = new TableColumn<>("Sale Price");
         salePrice.setCellValueFactory(new PropertyValueFactory<>("TotalSalePrice"));
-        table.getColumns().addAll(month, day, year, profit, productionCost, salePrice);
+        purchaseTableView.getColumns().addAll(Arrays.asList(month, day, year, profit, productionCost, salePrice));
         //Getting all possible purchases
         ArrayList<Purchase> purchases = new ArrayList<>();
         for (PurchaseHistory history : purchaseHistory) {
             purchases.addAll(history.getAllPurchases());
         }
         //Adding data to table
-        table.setItems(FXCollections.observableList(purchases));
+        purchaseTableView.setItems(FXCollections.observableList(purchases));
     }
-    static void getHistoryTable(ArrayList<PurchaseHistory> purchaseHistory, TableView table) {
+    static void getHistoryTable(ArrayList<PurchaseHistory> purchaseHistory, TableView<PurchaseHistory> table) {
         table.getColumns().clear();
-        TableColumn month = new TableColumn("Month");
+        TableColumn<PurchaseHistory, Integer> month = new TableColumn<>("Month");
         month.setCellValueFactory(new PropertyValueFactory<>("Month"));
-        TableColumn year = new TableColumn("Year");
+        TableColumn<PurchaseHistory, Integer> year = new TableColumn<>("Year");
         year.setCellValueFactory(new PropertyValueFactory<>("Year"));
-        TableColumn numPurchase = new TableColumn("Purchases Made");
+        TableColumn<PurchaseHistory, Integer> numPurchase = new TableColumn<>("Purchases Made");
         numPurchase.setCellValueFactory(new PropertyValueFactory<>("NumPurchases"));
-        TableColumn profit = new TableColumn("Profit");
+        TableColumn<PurchaseHistory, Double> profit = new TableColumn<>("Profit");
         profit.setCellValueFactory(new PropertyValueFactory<>("Profit"));
-        TableColumn productionCost = new TableColumn("Supply Cost");
+        TableColumn<PurchaseHistory, Double> productionCost = new TableColumn<>("Supply Cost");
         productionCost.setCellValueFactory(new PropertyValueFactory<>("SupplyCost"));
-        TableColumn salePrice = new TableColumn("Sale Price");
+        TableColumn<PurchaseHistory, Double> salePrice = new TableColumn<>("Sale Price");
         salePrice.setCellValueFactory(new PropertyValueFactory<>("SalePrice"));
-        table.getColumns().addAll(month, year, numPurchase, profit, productionCost, salePrice);
+        table.getColumns().addAll(Arrays.asList(month, year, numPurchase, profit, productionCost, salePrice));
         table.setItems(FXCollections.observableList(purchaseHistory));
     }
-    static void getRecommendedTable(ArrayList<PurchaseHistory> purchaseHistory, TableView table) {
+    static void getRecommendedTable(ArrayList<PurchaseHistory> purchaseHistory, TableView<Recommendation> table) {
         table.getColumns().clear();
         ArrayList<Recommendation> recommendations = new ArrayList<>();
         for (PurchaseHistory historyToAnalyze : purchaseHistory) {
@@ -61,19 +66,19 @@ public class TableController {
             int month = historyToAnalyze.getMonth();
             recommendations.add(new Recommendation(year, month, historyToAnalyze));
         }
-        TableColumn month = new TableColumn("Month");
+        TableColumn<Recommendation, Integer> month = new TableColumn<>("Month");
         month.setCellValueFactory(new PropertyValueFactory<>("Month"));
-        TableColumn burger = new TableColumn("Recommended Burgers");
+        TableColumn<Recommendation, Integer> burger = new TableColumn<>("Recommended Burgers");
         burger.setCellValueFactory(new PropertyValueFactory<>("RecommendedBurgers"));
-        TableColumn chicken = new TableColumn("Recommended Chicken");
+        TableColumn<Recommendation, Integer> chicken = new TableColumn<>("Recommended Chicken");
         chicken.setCellValueFactory(new PropertyValueFactory<>("RecommendedChicken"));
-        TableColumn expectedProfit = new TableColumn("Expected Profit");
+        TableColumn<Recommendation, Double> expectedProfit = new TableColumn<>("Expected Profit");
         expectedProfit.setCellValueFactory(new PropertyValueFactory<>("ExpectedProfit"));
-        TableColumn expectedProductionCost = new TableColumn("Expected Production Cost");
+        TableColumn<Recommendation, Double> expectedProductionCost = new TableColumn<>("Expected Production Cost");
         expectedProductionCost.setCellValueFactory(new PropertyValueFactory<>("ExpectedProductionCost"));
-        TableColumn expectedSalePrice = new TableColumn("Expected Sale Price");
+        TableColumn<Recommendation, Double> expectedSalePrice = new TableColumn<>("Expected Sale Price");
         expectedSalePrice.setCellValueFactory(new PropertyValueFactory<>("ExpectedSalePrice"));
-        table.getColumns().addAll(month, burger, chicken, expectedProfit, expectedProductionCost, expectedSalePrice);
+        table.getColumns().addAll(Arrays.asList(month, burger, chicken, expectedProfit, expectedProductionCost, expectedSalePrice));
         table.setItems(FXCollections.observableList(recommendations));
     }
 }

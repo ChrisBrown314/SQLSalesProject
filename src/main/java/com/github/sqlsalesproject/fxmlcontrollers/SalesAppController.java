@@ -1,9 +1,7 @@
 package com.github.sqlsalesproject.fxmlcontrollers;
 
 import com.github.sqlsalesproject.databasemanagement.Database;
-import com.github.sqlsalesproject.sale.Generate;
 import com.github.sqlsalesproject.sale.PurchaseHistory;
-import com.github.sqlsalesproject.tools.PurchaseDoesNotExistException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -15,7 +13,7 @@ public class SalesAppController {
     public Button clearDataButton;
     public Button regenPurchasesButton;
     public TableView tableView;
-    public ComboBox viewDropDown;
+    public ComboBox<String> viewDropDown;
     ArrayList<PurchaseHistory> storedHistory;
 
     @FXML
@@ -26,13 +24,14 @@ public class SalesAppController {
         viewDropDown.getItems().add("View Purchases");
         viewDropDown.getItems().add("View Profit by Month");
         viewDropDown.getItems().add("View Recommended Product");
+        viewDropDown.getSelectionModel().selectFirst();
     }
 
     public void viewChanged(ActionEvent actionEvent) {
         updateTable();
     }
     private void updateTable () {
-        switch ((String) viewDropDown.getValue()) {
+        switch (viewDropDown.getValue()) {
             case "View Purchases" -> TableController.getPurchaseTable(storedHistory, tableView);
             case "View Profit by Month" -> TableController.getHistoryTable(storedHistory, tableView);
             case "View Recommended Product" -> TableController.getRecommendedTable(storedHistory, tableView);

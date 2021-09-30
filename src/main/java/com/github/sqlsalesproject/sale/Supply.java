@@ -25,7 +25,7 @@ public class Supply {
     }
 
     /** Marks Supplies as used */
-    void useSupplies (int burger, int chicken) {
+    void countUsedSupplies(int burger, int chicken) {
         SUPPLY_USED[0] += burger;
         SUPPLY_USED[1] += chicken;
     }
