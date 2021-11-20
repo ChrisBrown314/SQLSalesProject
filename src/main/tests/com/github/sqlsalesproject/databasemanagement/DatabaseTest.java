@@ -16,7 +16,7 @@ class DatabaseTest {
     void writePurchaseTest() {
         PurchaseHistory purchaseHistory;
         for (int month = 1; month < 13; month++) {
-            purchaseHistory = Generate.generatePurchaseHistory(2500, 2500, 2020, month, 500, 1600);
+            purchaseHistory = Generate.generatePurchaseHistory( 2500, 2020, month, 500, 1600);
             try {
                 Database.getDatabase().writePurchaseHistory(purchaseHistory);
             } catch (Exception e) {

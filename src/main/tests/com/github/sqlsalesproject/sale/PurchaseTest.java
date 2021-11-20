@@ -22,8 +22,8 @@ class PurchaseTest {
     public void testOneCalculationMethods () {
         //Initialize ArrayList with two hamburgers
         ArrayList<Product> testProductList = new ArrayList<>();
-        testProductList.add(Product.HAMBURGER);
-        testProductList.add(Product.HAMBURGER);
+        testProductList.add(Product.getProduct("Hamburger"));
+        testProductList.add(Product.getProduct("Hamburger"));
         Purchase testPurchase = new Purchase("2021-01-01", testProductList);
         assertEquals(21.98, testPurchase.getTotalSalePrice(), .001);
         assertEquals(8, testPurchase.getTotalProductionCost(), .001);
@@ -34,9 +34,9 @@ class PurchaseTest {
     public void testTwoCalculationMethods () {
         //Initialize ArrayList with one of all product
         ArrayList<Product> testProductList = new ArrayList<>();
-        testProductList.add(Product.HAMBURGER);
-        testProductList.add(Product.CHICKEN_SANDWICH);
-        testProductList.add(Product.CHICKEN_STRIPS);
+        testProductList.add(Product.getProduct("Hamburger"));
+        testProductList.add(Product.getProduct("Chicken Sandwich"));
+        testProductList.add(Product.getProduct("Chicken Strips"));
         Purchase testPurchase = new Purchase("2021-01-01", testProductList);
         assertEquals(34.97, testPurchase.getTotalSalePrice(), .001);
         assertEquals(14, testPurchase.getTotalProductionCost(), .001);
@@ -55,7 +55,7 @@ class PurchaseTest {
     public void testFourCalculationMethods () {
         ArrayList<Product> testProductList = new ArrayList<>();
         for (int count = 0; count < 100; count++) {
-            testProductList.add(Product.HAMBURGER);
+            testProductList.add(Product.getProduct("Hamburger"));
         }
         Purchase testPurchase = new Purchase("2021-01-01", testProductList);
         assertEquals(1099.0, testPurchase.getTotalSalePrice(), .001);

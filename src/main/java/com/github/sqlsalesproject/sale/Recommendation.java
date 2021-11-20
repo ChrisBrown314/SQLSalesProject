@@ -23,8 +23,8 @@ public class Recommendation {
         boolean loop = true;
         int loopCount = 0;
         while (loop) {
-            double chickenCost = loopCount*Product.CHICKEN_STRIPS.getCostToProduce();
-            double burgerCost = (ratio*loopCount)*Product.HAMBURGER.getCostToProduce();
+            double chickenCost = loopCount*Product.getCostToProduce("Chicken Strips");
+            double burgerCost = (ratio*loopCount)*Product.getCostToProduce("Hamburger");
             if ((burgerCost+chickenCost)<halfSalePrice) {
                 loopCount++;
             } else {
@@ -45,13 +45,13 @@ public class Recommendation {
         return salePrice-costToProduce;
     }
     public Double getExpectedSalePrice() {
-        double burgerSales = getRecommendedBurgers()*Product.HAMBURGER.getSalePrice();
-        double sandwichSales = (getRecommendedChicken()/2.0)*Product.CHICKEN_SANDWICH.getSalePrice();
-        double stripSales = (getRecommendedChicken()/2.0)*Product.CHICKEN_STRIPS.getSalePrice();
+        double burgerSales = getRecommendedBurgers()*Product.getSalePrice("Hamburger");
+        double sandwichSales = (getRecommendedChicken()/2.0)*Product.getSalePrice("Chicken Sandwich");
+        double stripSales = (getRecommendedChicken()/2.0)*Product.getSalePrice("Chicken Strips");
         return burgerSales+sandwichSales+stripSales;
     }
     public Double getExpectedProductionCost () {
-        return (getRecommendedBurgers()*Product.HAMBURGER.getCostToProduce())+(getRecommendedChicken()*Product.CHICKEN_SANDWICH.getCostToProduce());
+        return (getRecommendedBurgers()*Product.getCostToProduce("Hamburger"))+(getRecommendedChicken()*Product.getCostToProduce("Chicken Sandwich"));
     }
 
     public Integer getRecommendedBurgers () {

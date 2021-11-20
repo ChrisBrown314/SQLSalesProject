@@ -1,76 +1,76 @@
 package com.github.sqlsalesproject.sale;
 
-import com.github.sqlsalesproject.tools.PropertyReader;
-import static com.github.sqlsalesproject.tools.PropertyReader.fetchProductionCost;
-import static com.github.sqlsalesproject.tools.PropertyReader.fetchSalePrice;
+
+import java.util.HashMap;
+
+//TODO - Scalable product list with more accurate supplies
+
+//TODO - Supply counter
+
+//TODO - initialize from file!
+// -> chicken & hamburger
 
 /**The enum Product.
  * Contains a list of all possible products, their sale price and production cost, as well as a
  * toString method.
  * @author Christopher Brown
  */
-public enum Product {
-    /**The chicken sandwich.
-     * Contains information about the chicken sandwich product.
-     * Fetches the production cost and sale price using the fetch methods
-     * of {@link PropertyReader}.
-     */
-    CHICKEN_SANDWICH (fetchProductionCost("chickensandwich"), fetchSalePrice("chickensandwich"),
-            "chicken sandwich"),
-    /**Chicken Strips.
-     * Contains information about the chicken strip product.
-     * Fetches the production cost and sale price using the fetch methods
-     * of {@link PropertyReader}.
-     */
-    CHICKEN_STRIPS (fetchProductionCost("chickenstrips"), fetchSalePrice("chickenstrips"),
-            "chicken strips"),
-    /**The hamburger.
-     * Contains information about the hamburger product.
-     * Fetches the production cost and sale price using the fetch methods
-     * of {@link PropertyReader}.
-     */
-    HAMBURGER( fetchProductionCost("hamburger"), fetchSalePrice("hamburger"),"hamburger");
+public class Product {
+    private static final HashMap<String, Product> allProducts = new HashMap<>();
+    private final HashMap<Supply, Double> supplyList;
+    private final Double salePrice;
+    private Double productionCost;
 
-    /**Cost to produce. The production cost of a product.*/
-    private final double COST_TO_PRODUCE;
-    /**Sell price. The price at which the product sells for.*/
-    private final double SALE_PRICE;
-    /**Product name. A string holding the name of the product, used within the toString method.*/
-    private final String NAME;
+    //~ Constructors ~//
 
-    /**Product Constructor.
-     * Constructs a product with a production cost, sale price, and name.
-     * @param costToProduce The cost to produce the product.
-     * @param salePrice The sale price of the product.
-     * @param name The name of the product.
-     */
-    Product ( double costToProduce, double salePrice, String name)
-    {
-        COST_TO_PRODUCE = costToProduce;
-        SALE_PRICE = salePrice;
-        NAME = name;
+    public Product (String nameOfProduct, Double salePrice, HashMap<Supply, Double> supplyList) {
+        allProducts.put(nameOfProduct, this);
+        this.salePrice = salePrice;
+        this.supplyList = supplyList;
+        // Adds all supply cost to the productionCost of this product
+        supplyList.forEach((supply, unitReq) -> productionCost += supply.getCost(unitReq));
+    }
+
+    public Product (String nameOfProduct, Double salePrice) {
+        allProducts.put(nameOfProduct, this);
+        this.salePrice = salePrice;
+        this.supplyList = new HashMap<>();
+        productionCost = 0.0;
     }
 
 
-    /**Returns cost to produce.
-     * @return The cost to produce the product.
-     */
-    double getCostToProduce() {
-        return COST_TO_PRODUCE;
+    //~ Tools ~//
+
+
+    public void addSupply(Supply supplyToAdd, Double unitReq) {
+        supplyList.putIfAbsent(supplyToAdd, unitReq);  // Adds the supply to the supply requirement
     }
 
-    /**Returns product's sale price
-     * @return  The sale price of the product.
-     */
-    double getSalePrice() {
-        return SALE_PRICE;
+
+    //~ Getters and Setters ~//
+
+
+    public Double getCostToProduce() {
+        return this.productionCost;
     }
 
-    /**Returns the product's name.
-     * @return The name of the product.
-     */
-    @Override
-    public String toString() {
-        return NAME;
+    public Double getSalePrice() {
+        return this.salePrice;
+    }
+
+    public static Double getCostToProduce(String nameOfProduct) {
+        return allProducts.get(nameOfProduct).productionCost;
+    }
+
+    public static Double getSalePrice(String nameOfProduct) {
+        return allProducts.get(nameOfProduct).salePrice;
+    }
+
+    public static Product getProduct(String nameOfProduct) {
+        return allProducts.get(nameOfProduct);
+    }
+
+    public HashMap<Supply, Double> getSuppliesRequired() {
+        return supplyList;
     }
 }

@@ -16,25 +16,28 @@ public class Generate {
      * algorithm from the DSI Utilities library.*/
     private static final XoShiRo256StarStarRandom RANDOM = new XoShiRo256StarStarRandom();
 
+    //TODO - redo this!
+
     /** Generates the purchase history for a given month.
      * See: {@link PurchaseHistory}
-     * @param supplyBurger The amount of burger supplies available.
-     * @param supplyChicken The amount of chicken supplies available.
+     * @param suppliesPurchased The amount of supplies available.
      * @param year The year the purchase history covers.
      * @param month The month the purchase history covers.
      * @param minNumPurchases The minimum number of purchases to generate for the purchase history.
      * @param maxNumPurchases The maximum number of purchases to generate for the purchase history.
      * @return Randomly generated purchase history containing a month's worth of purchases.
      */
-    public static PurchaseHistory generatePurchaseHistory(int supplyBurger, int supplyChicken, int year, int month, int minNumPurchases, int maxNumPurchases) {
-        Supply supplyTracker = new Supply(new int[] {supplyBurger, supplyChicken});
+    public static PurchaseHistory generatePurchaseHistory(Integer suppliesPurchased, int year, int month, int minNumPurchases, int maxNumPurchases) {
+        SupplyTracker supplyTracker = new SupplyTracker(suppliesPurchased);
         PurchaseHistory generatedPurchaseHistory = new PurchaseHistory(0, month, year);
         boolean supplyNotExceeded = true;
         int purchaseCount = 0;
         int maxPurchaseCount = RANDOM.nextInt(maxNumPurchases-minNumPurchases)+minNumPurchases;
         while (purchaseCount < maxPurchaseCount && supplyNotExceeded) {
             Purchase generatedPurchase = generatePurchase(year, month);
-            supplyTracker.countUsedSupplies(generatedPurchase.getNumberHamburger(), generatedPurchase.getNumberChicken());
+            supplyTracker.countSuppliesUsed(Product.getProduct("Hamburger"), generatedPurchase.getNumberHamburger());
+            supplyTracker.countSuppliesUsed(Product.getProduct("Chicken Strips"), generatedPurchase.getNumberStrip());
+            supplyTracker.countSuppliesUsed(Product.getProduct("Chicken Sandwich"), generatedPurchase.getNumberSandwich());
             if (!supplyTracker.suppliesExceeded()) {
                 generatedPurchaseHistory.add(generatedPurchase);
                 purchaseCount++;
@@ -68,9 +71,9 @@ public class Generate {
         for (int count = 0; count < productCount; count++) {
             int product = RANDOM.nextInt(3);
             switch (product) {
-                case 0 -> productList.add(Product.CHICKEN_SANDWICH);
-                case 1 -> productList.add(Product.CHICKEN_STRIPS);
-                case 2 -> productList.add(Product.HAMBURGER);
+                case 0 -> productList.add(Product.getProduct("Chicken Sandwich"));
+                case 1 -> productList.add(Product.getProduct("Chicken Strips"));
+                case 2 -> productList.add(Product.getProduct("Hamburger"));
             }
         }
         return productList;

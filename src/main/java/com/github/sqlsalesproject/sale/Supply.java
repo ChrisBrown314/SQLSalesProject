@@ -1,38 +1,35 @@
 package com.github.sqlsalesproject.sale;
 
+import java.util.HashMap;
+
 /** Serves as a way to keep track of supplies and their cost */
 public class Supply {
-    /** Amount of supplies available
-     * First index holds the supply of burger
-     * Second index holds supply of chicken */
-    private final int[] SUPPLY;
-    /** Supplies used */
-    private final int[] SUPPLY_USED;
+    private static final HashMap<String, Supply> listOfSupply = new HashMap<>();
+    private final Double supplyCost;  // The cost of the supply
+    private final Integer numberOfUnits;  // The number of units per supply - EX: cups per bag of flower
+    private final Double unitCost;  // The cost per unit
 
-    public Supply (int[] supply) {
-        this.SUPPLY = supply;
-        SUPPLY_USED = new int[supply.length];
+    public Supply(String supplyName, Double supplyCost, Integer numberOfUnits) {
+        this.supplyCost = supplyCost;
+        this.numberOfUnits = numberOfUnits;
+        this.unitCost = supplyCost/numberOfUnits;
+        listOfSupply.putIfAbsent(supplyName, this);
     }
 
-    /** Returns true if supplies have run out */
-    public boolean suppliesExceeded() {
-        for (int count = 0; count < SUPPLY.length; count++) {
-            if (SUPPLY_USED[count] > SUPPLY[count]) {
-                return true;
-            }
-        }
-        return false;
+    public Double getCost(Double unitReq) {
+        return unitCost * unitReq;
     }
 
-    /** Marks Supplies as used */
-    void countUsedSupplies(int burger, int chicken) {
-        SUPPLY_USED[0] += burger;
-        SUPPLY_USED[1] += chicken;
+    public Double getCost() {
+        return supplyCost;
     }
 
-    /** Returns the cost of the supplies bought */
-    double getSupplyCost () {
-        return (SUPPLY[0]*Product.HAMBURGER.getCostToProduce())
-                +(SUPPLY[1]*Product.CHICKEN_SANDWICH.getCostToProduce());
+    public Integer getNumberOfUnits() {
+        return numberOfUnits;
     }
+
+    public static HashMap<String, Supply> getAllSupply () {
+        return listOfSupply;
+    }
+
 }

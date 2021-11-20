@@ -196,15 +196,15 @@ public class Database {
                 ArrayList<Product> productList = new ArrayList<>();
                 while ((burger + strip + sandwich) != 0) {
                     if (burger > 0) {
-                        productList.add(Product.HAMBURGER);
+                        productList.add(Product.getProduct("Hamburger"));
                         burger--;
                     }
                     if (strip > 0) {
-                        productList.add(Product.CHICKEN_STRIPS);
+                        productList.add(Product.getProduct("Chicken Strip"));
                         strip--;
                     }
                     if (sandwich > 0) {
-                        productList.add(Product.CHICKEN_SANDWICH);
+                        productList.add(Product.getProduct("Chicken Sandwich"));
                         sandwich--;
                     }
                 }
@@ -245,7 +245,7 @@ public class Database {
             System.out.println("Starting generation... " + (System.currentTimeMillis()-startTime));
             for (int month = 1; month < 13; month++) {
                 System.out.println("Generating purchase history for month " + month + ". " + (System.currentTimeMillis()-startTime));
-                PurchaseHistory generatedPH = Generate.generatePurchaseHistory(2500, 2500, 2020,
+                PurchaseHistory generatedPH = Generate.generatePurchaseHistory(2500, 2020,
                         month, 500, 2000);
                 getDatabase().writePurchaseHistory(generatedPH);
             }
