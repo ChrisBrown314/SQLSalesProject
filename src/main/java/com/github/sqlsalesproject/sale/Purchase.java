@@ -50,9 +50,10 @@ public class Purchase implements Comparable<Purchase> {
         PURCHASE_DATE = purchaseDate;
         SALE_PRICE = calcTotalSalePrice(productsPurchased);
         PRODUCTION_COST = calcTotalProductionCost(productsPurchased);
-        SANDWICH_AMOUNT = getNumberProducts("chicken sandwich", productsPurchased);
-        STRIP_AMOUNT = getNumberProducts("chicken strips", productsPurchased);
-        HAMBURGER_AMOUNT = getNumberProducts("hamburger", productsPurchased);
+        // TODO - refactor to have any number of products
+        SANDWICH_AMOUNT = getNumberProducts("Chicken Sandwich", productsPurchased);
+        STRIP_AMOUNT = getNumberProducts("Chicken Strips", productsPurchased);
+        HAMBURGER_AMOUNT = getNumberProducts("Hamburger", productsPurchased);
     }
 
     /** Returns the date of the purchase */
@@ -108,7 +109,7 @@ public class Purchase implements Comparable<Purchase> {
         return SALE_PRICE - PRODUCTION_COST;
     }
 
-    //TODO - refactor to use enum instead of toString function to sum product by type.
+    //TODO - refactor to be more modular
     /** Returns number of products for given product.
      * @param productName The name of the product to count.
      * @param productList List of all products in the purchase.

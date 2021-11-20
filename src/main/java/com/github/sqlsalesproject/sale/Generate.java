@@ -70,6 +70,7 @@ public class Generate {
         int productCount = RANDOM.nextInt(3) + 1;
         for (int count = 0; count < productCount; count++) {
             int product = RANDOM.nextInt(3);
+            Product p = Product.getProduct("Chicken Strips");
             switch (product) {
                 case 0 -> productList.add(Product.getProduct("Chicken Sandwich"));
                 case 1 -> productList.add(Product.getProduct("Chicken Strips"));

@@ -20,11 +20,13 @@ public class Product {
     private final HashMap<Supply, Double> supplyList;
     private final Double salePrice;
     private Double productionCost;
+    private final String nameOfProduct;
 
     //~ Constructors ~//
 
     public Product (String nameOfProduct, Double salePrice, HashMap<Supply, Double> supplyList) {
         allProducts.put(nameOfProduct, this);
+        this.nameOfProduct = nameOfProduct;
         this.salePrice = salePrice;
         this.supplyList = supplyList;
         // Adds all supply cost to the productionCost of this product
@@ -33,8 +35,9 @@ public class Product {
 
     public Product (String nameOfProduct, Double salePrice) {
         allProducts.put(nameOfProduct, this);
+        this.nameOfProduct = nameOfProduct;
         this.salePrice = salePrice;
-        this.supplyList = new HashMap<>();
+        this.supplyList = new HashMap<Supply, Double>();
         productionCost = 0.0;
     }
 
@@ -43,9 +46,14 @@ public class Product {
 
 
     public void addSupply(Supply supplyToAdd, Double unitReq) {
-        supplyList.putIfAbsent(supplyToAdd, unitReq);  // Adds the supply to the supply requirement
+        supplyList.put(supplyToAdd, unitReq);  // Adds the supply to the supply requirement
+        productionCost += supplyToAdd.getCost(unitReq);  // Updates the production cost
     }
 
+    @Override
+    public String toString() {
+        return nameOfProduct;
+    }
 
     //~ Getters and Setters ~//
 

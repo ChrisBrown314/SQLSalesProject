@@ -19,6 +19,17 @@ public class SalesApp extends Application {
     /** Loads fxml scene, sets window properties, and shows the window */
     @Override
     public void start(Stage stage) throws IOException {
+        //Initialize Products
+        Product hamburger = new Product("Hamburger", 10.99);
+        Product chickenStrip = new Product("Chicken Strips", 12.99);
+        Product chickenSandwich = new Product("Chicken Sandwich", 10.99);
+        Supply chicken = new Supply("Chicken", 10.0, 10);
+        hamburger.addSupply(new Supply("Burger", 6.00, 1), .25);
+        hamburger.addSupply(new Supply("Buns", 5.0, 8), 1.0);
+        chickenSandwich.addSupply(chicken, 1.0);
+        chickenStrip.addSupply(chicken, 3.0);
+
+
         //TODO Comments better?
         //TODO clean up, maybe split up and create a separate scene loader class
         FXMLLoader sceneLoader = new FXMLLoader(getClass().getResource("/fxmlResources/sales-app.fxml"));
@@ -32,14 +43,6 @@ public class SalesApp extends Application {
 
     /** Connects to Database and launches the application */
     public static void main(String[] args) {
-        //Initialize Products
-        Product hamburger = new Product("Hamburger", 10.99);
-        Product chickenStrip = new Product("Chicken Strips", 12.99);
-        Product chickenSandwich = new Product("Chicken Sandwich", 10.99);
-        hamburger.addSupply(new Supply("Burger", 6.00, 1), .25);
-        chickenSandwich.addSupply(new Supply("Chicken", 10.0, 10), 1.0);
-        chickenSandwich.addSupply(new Supply("Chicken", 10.0, 10), 3.0);
-
         Database.getDatabase();
         launch();
     }

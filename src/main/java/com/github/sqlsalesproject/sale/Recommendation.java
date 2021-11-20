@@ -17,15 +17,16 @@ public class Recommendation {
         calculateRecommendations();
     }
 
+    //TODO - Refactor this!
     private void calculateRecommendations() {
         double halfSalePrice = historyToAnalyze.getSalePrice()/2.0;
         double ratio = historyToAnalyze.getAllBurgers()/historyToAnalyze.getAllChicken();
         boolean loop = true;
         int loopCount = 0;
         while (loop) {
-            double chickenCost = loopCount*Product.getCostToProduce("Chicken Strips");
+            double chickenStripCost = loopCount*Product.getCostToProduce("Chicken Strips");
             double burgerCost = (ratio*loopCount)*Product.getCostToProduce("Hamburger");
-            if ((burgerCost+chickenCost)<halfSalePrice) {
+            if ((burgerCost+chickenStripCost)<halfSalePrice) {
                 loopCount++;
             } else {
                 recommendedBurger = (int)(ratio*loopCount);

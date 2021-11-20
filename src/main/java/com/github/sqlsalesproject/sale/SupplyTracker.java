@@ -20,9 +20,10 @@ public class SupplyTracker {
 
     public void countSuppliesUsed(Product productToAdd, Integer numProduct) {
         for (Map.Entry<Supply, Double> entry : productToAdd.getSuppliesRequired().entrySet()) {
-            Supply supplyToCheck = entry.getKey();
             //Updates the available supplies
-            supplyList.put(supplyToCheck, supplyList.get(supplyToCheck) - (entry.getValue() * numProduct));
+            System.out.println(entry.getKey());
+            double supplyAvailable = supplyList.get(entry.getKey());
+            supplyList.replace(entry.getKey(), (supplyAvailable - (entry.getValue() * numProduct)));
         }
     }
 

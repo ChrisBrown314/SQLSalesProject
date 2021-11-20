@@ -200,7 +200,7 @@ public class Database {
                         burger--;
                     }
                     if (strip > 0) {
-                        productList.add(Product.getProduct("Chicken Strip"));
+                        productList.add(Product.getProduct("Chicken Strips"));
                         strip--;
                     }
                     if (sandwich > 0) {
