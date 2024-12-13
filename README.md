@@ -3,7 +3,7 @@ Designed and programmed by Christopher Brown
 
 A program built to learn the basics of SQL.
 
-###Project Description
+### Project Description
 Generates thousands of purchases which are written to and read from an SQL database.
 Allows managers to sort through purchase data using different filters. 
 Additionally, recommends an amount of products to purchase in order to maximize profits.
@@ -13,7 +13,7 @@ Additionally, recommends an amount of products to purchase in order to maximize 
 * Can generate recommendations for the amount of products to purchase each month in order to maximize gains and reduce or eliminate losses.
 * Allows the viewing and sorting of all purchase data using a JavaFX GUI.
 
-###Future Plans
+### Future Plans
 * Allow managers to generate a weekly recommendation report.
 * Increase modularity of the program - allow managers to create their own products and supplies.
 * Create a more complicated - and accurate - algorithm for generating recommendations.
